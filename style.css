@@ -1,929 +1,1503 @@
-/* ==========================================
-   EMPTYMILES
-   Dynamic Route + Matching Demo
-========================================== */
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #061b2e;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input {
+    font-family: inherit;
+}
 
 
 /* =========================
-   ELEMENTS
+   COLORS
 ========================= */
 
-const startInput =
-    document.getElementById("startLocation");
+:root {
+    --bg: #061b2e;
+    --bg-light: #09263e;
+    --card: #0b2941;
+    --border: rgba(255,255,255,0.12);
 
-const endInput =
-    document.getElementById("endLocation");
+    --green: #40e6a0;
+    --green-dark: #22c987;
 
-const truckCapacityInput =
-    document.getElementById("truckCapacity");
-
-const availableCapacityInput =
-    document.getElementById("availableCapacity");
-
-const postTruckBtn =
-    document.getElementById("postTruckBtn");
-
-const routeCard =
-    document.getElementById("routeCard");
-
-const shipmentStep =
-    document.getElementById("shipmentStep");
-
-const routeStart =
-    document.getElementById("routeStart");
-
-const routeEnd =
-    document.getElementById("routeEnd");
-
-const visualStart =
-    document.getElementById("visualStart");
-
-const visualEnd =
-    document.getElementById("visualEnd");
-
-const animatedTruck =
-    document.getElementById("animatedTruck");
-
-const cargoBoxes =
-    document.getElementById("cargoBoxes");
-
-const routeStatus =
-    document.getElementById("routeStatus");
-
-const statusGoing =
-    document.getElementById("statusGoing");
-
-const statusEmpty =
-    document.getElementById("statusEmpty");
-
-const statusMatched =
-    document.getElementById("statusMatched");
-
-const statusLoaded =
-    document.getElementById("statusLoaded");
+    --text: #ffffff;
+    --muted: #a9bac8;
+}
 
 
 /* =========================
-   SHIPMENT
+   NAVBAR
 ========================= */
 
-const shipmentStart =
-    document.getElementById("shipmentStart");
+.navbar {
+    height: 76px;
 
-const shipmentEnd =
-    document.getElementById("shipmentEnd");
+    padding: 0 6%;
 
-const requiredCapacity =
-    document.getElementById("requiredCapacity");
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-const findMatchBtn =
-    document.getElementById("findMatchBtn");
+    background: rgba(6,27,46,0.95);
 
-const matchCard =
-    document.getElementById("matchCard");
+    border-bottom: 1px solid var(--border);
 
-const searching =
-    document.getElementById("searching");
+    position: sticky;
+    top: 0;
 
-const matchResult =
-    document.getElementById("matchResult");
+    z-index: 100;
+}
 
-const checkRoute =
-    document.getElementById("checkRoute");
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-const checkCapacity =
-    document.getElementById("checkCapacity");
+.logo-icon {
+    font-size: 30px;
+}
 
-const checkDate =
-    document.getElementById("checkDate");
+.logo strong {
+    display: block;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+.logo strong span {
+    color: var(--green);
+}
+
+.logo small {
+    display: block;
+    color: var(--muted);
+    font-size: 8px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 28px;
+}
+
+.nav-links a {
+    color: #d8e2ea;
+    font-size: 14px;
+
+    transition:
+        color 0.25s ease;
+}
+
+.nav-links a:hover {
+    color: var(--green);
+}
+
+.nav-button {
+    border: 1px solid var(--green);
+    color: var(--green);
+
+    padding: 9px 18px;
+
+    border-radius: 25px;
+
+    font-size: 13px;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.nav-button:hover {
+    background: var(--green);
+    color: #062018;
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   COMMON
+========================= */
+
+section {
+    padding: 80px 8%;
+}
+
+.badge {
+    display: inline-block;
+
+    color: var(--green);
+
+    font-size: 15px;
+
+    letter-spacing: 2px;
+
+    font-weight: bold;
+
+    margin-bottom: 16px;
+}
+
+.section-heading {
+    max-width: 750px;
+    margin: 0 auto 45px;
+    text-align: center;
+}
+
+.section-heading h2 {
+    font-size: clamp(30px, 5vw, 48px);
+    line-height: 1.1;
+
+    margin-bottom: 15px;
+}
+
+.section-heading p {
+    color: var(--muted);
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.primary-button {
+    border: none;
+
+    background: var(--green);
+
+    color: #062018;
+
+    padding: 14px 24px;
+
+    border-radius: 30px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    display: inline-block;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.primary-button:hover {
+    transform: translateY(-3px);
+
+    background: #58efad;
+
+    box-shadow:
+        0 8px 20px rgba(64,230,160,0.18);
+}
+
+.secondary-button {
+    background: transparent;
+
+    border: 1px solid var(--green);
+
+    color: var(--green);
+
+    padding: 13px 22px;
+
+    border-radius: 30px;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.secondary-button:hover {
+    background: var(--green);
+    color: #062018;
+    transform: translateY(-3px);
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 540px;
+
+    display: flex;
+    align-items: center;
+
+    background:
+        radial-gradient(
+            circle at 75% 40%,
+            rgba(64,230,160,0.12),
+            transparent 35%
+        );
+}
+
+.hero-content {
+    max-width: 850px;
+}
+
+.hero h1 {
+    font-size: clamp(42px, 7vw, 76px);
+
+    line-height: 1.03;
+
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    color: var(--green);
+}
+
+.hero p {
+    max-width: 650px;
+
+    color: var(--muted);
+
+    font-size: 18px;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================
+   DEMO
+========================= */
+
+.demo-section {
+    background: #071f34;
+}
+
+.demo-card,
+.route-card,
+.match-card,
+.booking-card,
+.tracking-card {
+    max-width: 1050px;
+
+    margin: 25px auto;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 20px;
+
+    padding: 32px;
+}
+
+.step-label,
+.route-label {
+    color: var(--green);
+
+    font-size: 15px;
+
+    letter-spacing: 2px;
+
+    font-weight: bold;
+}
+
+.demo-card h3 {
+    font-size: 26px;
+
+    margin: 8px 0 25px;
+}
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+.input-group label {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 15px;
+
+    margin-bottom: 7px;
+}
+
+.input-group input {
+    width: 100%;
+
+    background: #061b2e;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    padding: 13px 15px;
+
+    color: white;
+
+    outline: none;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.input-group input:focus {
+    border-color: var(--green);
+
+    box-shadow:
+        0 0 0 3px rgba(64,230,160,0.08);
+}
+
+
+/* =========================
+   ROUTE
+========================= */
+
+.route-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 35px;
+}
+
+.route-header h3 {
+    font-size: 25px;
+}
+
+.arrow {
+    color: var(--green);
+    padding: 0 10px;
+}
+
+.route-status {
+    color: var(--green);
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================
+   ROAD
+========================= */
+
+.road-container {
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+.location {
+    width: 100px;
+
+    text-align: center;
+
+    flex-shrink: 0;
+}
+
+.pin {
+    font-size: 22px;
+}
+
+.location strong {
+    display: block;
+
+    font-size: 14px;
+}
+
+.road {
+    position: relative;
+
+    height: 100px;
+
+    flex: 1;
+
+    display: flex;
+
+    align-items: center;
+}
+
+.road-line {
+    height: 4px;
+
+    width: 100%;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            var(--green) 0,
+            var(--green) 25px,
+            transparent 25px,
+            transparent 45px
+        );
+
+    opacity: 0.7;
+}
+
+.truck {
+    position: absolute;
+
+    left: 0;
+
+    font-size: 42px;
+
+    z-index: 5;
+
+    transform: translateX(-50%);
+
+    transition:
+        left 8s linear,
+        transform 0.8s ease;
+}
+
+.cargo {
+    position: absolute;
+
+    left: 50%;
+
+    top: 10px;
+
+    font-size: 20px;
+
+    opacity: 0;
+
+    transition:
+        opacity 0.5s ease;
+}
+
+.cargo.show {
+    opacity: 1;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.journey-status {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 30px;
+}
+
+.status-item {
+    text-align: center;
+
+    color: #62788b;
+
+    transition:
+        color 0.4s ease,
+        transform 0.4s ease;
+}
+
+.status-item span {
+    font-size: 20px;
+}
+
+.status-item small {
+    display: block;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+}
+
+.status-item.active {
+    color: var(--green);
+
+    transform: translateY(-2px);
+}
+
+.status-line {
+    width: 35px;
+
+    height: 1px;
+
+    background: #365166;
+}
 
 
 /* =========================
    MATCH
 ========================= */
 
-const matchStart =
-    document.getElementById("matchStart");
+.match-card {
+    text-align: center;
+}
 
-const matchEnd =
-    document.getElementById("matchEnd");
+.search-icon {
+    font-size: 40px;
 
-const matchAvailable =
-    document.getElementById("matchAvailable");
+    animation: pulse 1.2s infinite;
+}
 
-const matchRequired =
-    document.getElementById("matchRequired");
+.search-steps {
+    display: flex;
 
-const bookBtn =
-    document.getElementById("bookBtn");
+    justify-content: center;
+
+    gap: 30px;
+
+    margin-top: 25px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.search-steps span.done {
+    color: var(--green);
+}
+
+.match-badge {
+    display: inline-block;
+
+    background: rgba(64,230,160,0.12);
+
+    border: 1px solid rgba(64,230,160,0.3);
+
+    color: var(--green);
+
+    padding: 8px 15px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+.match-score {
+    font-size: 65px;
+
+    font-weight: bold;
+
+    color: var(--green);
+
+    line-height: 1;
+
+    margin: 20px 0;
+}
+
+.match-score small {
+    display: block;
+
+    font-size: 12px;
+
+    color: var(--muted);
+}
+
+.match-details {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+
+    background: #061b2e;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    margin-bottom: 25px;
+}
+
+.match-details small {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    margin-bottom: 4px;
+}
+
+.match-details strong {
+    font-size: 14px;
+}
 
 
 /* =========================
    BOOKING
 ========================= */
 
-const bookingCard =
-    document.getElementById("bookingCard");
+.booking-card {
+    text-align: center;
+}
 
-const trackBtn =
-    document.getElementById("trackBtn");
+.success-icon {
+    width: 65px;
+    height: 65px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    color: #062018;
+
+    font-size: 40px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 auto 20px;
+
+    animation: successPop 0.5s ease;
+}
+
+.booking-card h2 {
+    font-size: 35px;
+
+    margin-bottom: 10px;
+}
+
+.booking-card p {
+    color: var(--muted);
+
+    margin-bottom: 25px;
+}
 
 
 /* =========================
    TRACKING
 ========================= */
 
-const trackingCard =
-    document.getElementById("trackingCard");
+.tracking-header {
+    display: flex;
 
-const trackingStart =
-    document.getElementById("trackingStart");
+    justify-content: space-between;
 
-const trackingEnd =
-    document.getElementById("trackingEnd");
+    align-items: center;
+}
 
-const trackingTruck =
-    document.getElementById("trackingTruck");
+.tracking-header small {
+    color: var(--muted);
+}
 
-const trackingMessage =
-    document.getElementById("trackingMessage");
+.tracking-header h3 {
+    font-size: 25px;
+}
+
+.tracking-live {
+    color: var(--green);
+
+    font-size: 11px;
+}
+
+.tracking-route {
+    display: flex;
+
+    align-items: center;
+
+    margin: 45px 0 25px;
+}
+
+.tracking-point {
+    display: flex;
+
+    gap: 10px;
+
+    align-items: center;
+}
+
+.tracking-point > span {
+    color: #516b7c;
+
+    font-size: 22px;
+
+    transition:
+        color 0.3s ease;
+}
+
+.tracking-point.active > span {
+    color: var(--green);
+}
+
+.tracking-point small {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 11px;
+}
+
+.tracking-line {
+    height: 3px;
+
+    flex: 1;
+
+    background: #294458;
+
+    margin: 0 15px;
+
+    position: relative;
+}
+
+.tracking-truck {
+    position: absolute;
+
+    left: 0;
+
+    top: -20px;
+
+    font-size: 29px;
+
+    z-index: 10;
+
+    /*
+       Truck faces RIGHT.
+       It moves LEFT → RIGHT.
+    */
+    transform:
+        translateX(-50%)
+        scaleX(1);
+
+    transition:
+        left 10s linear,
+        transform 0.4s ease;
+}
+
+.tracking-message {
+    color: var(--green);
+
+    background: rgba(64,230,160,0.08);
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   SIMPLE PROCESS
+================================================== */
+
+.how-section {
+    background: var(--bg);
+}
+
+.steps {
+    max-width: 1000px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 20px;
+}
 
 
 /* =========================
-   DATA
+   PROCESS CARD
 ========================= */
 
-let routeData = {
+.step {
 
-    start: "",
+    padding: 25px;
 
-    end: "",
+    border: 1px solid var(--border);
 
-    truckCapacity: 0,
+    border-radius: 15px;
 
-    availableCapacity: 0
+    background: var(--card);
 
-};
+    position: relative;
 
+    overflow: hidden;
 
-/* ==================================================
-   STEP 1
-   POST TRUCK
-================================================== */
+    cursor: pointer;
 
-postTruckBtn.addEventListener("click", function () {
-
-    const start =
-        startInput.value.trim();
-
-    const end =
-        endInput.value.trim();
-
-    const truckCapacity =
-        Number(truckCapacityInput.value);
-
-    const availableCapacity =
-        Number(availableCapacityInput.value);
-
-
-    /* =========================
-       VALIDATION
-    ========================= */
-
-    if (!start || !end) {
-
-        alert(
-            "Please enter both starting location and destination."
-        );
-
-        return;
-    }
-
-
-    if (!truckCapacity || !availableCapacity) {
-
-        alert(
-            "Please enter truck and available capacity."
-        );
-
-        return;
-    }
-
-
-    if (availableCapacity > truckCapacity) {
-
-        alert(
-            "Available return capacity cannot be greater than truck capacity."
-        );
-
-        return;
-    }
-
-
-    /* =========================
-       SAVE ROUTE
-    ========================= */
-
-    routeData.start =
-        start;
-
-    routeData.end =
-        end;
-
-    routeData.truckCapacity =
-        truckCapacity;
-
-    routeData.availableCapacity =
-        availableCapacity;
-
-
-    /* =========================
-       UPDATE UI
-    ========================= */
-
-    routeStart.textContent =
-        start;
-
-    routeEnd.textContent =
-        end;
-
-    visualStart.textContent =
-        start;
-
-    visualEnd.textContent =
-        end;
-
-
-    /* =========================
-       SHOW ROUTE
-    ========================= */
-
-    routeCard.classList.remove("hidden");
-
-
-    /* =========================
-       SCROLL
-    ========================= */
-
-    setTimeout(() => {
-
-        routeCard.scrollIntoView({
-
-            behavior: "smooth",
-
-            block: "center"
-
-        });
-
-    }, 200);
-
-
-    /* =========================
-       START TRUCK
-    ========================= */
-
-    startTruckJourney();
-
-});
-
-
-/* ==================================================
-   TRUCK JOURNEY
-   START → DESTINATION
-================================================== */
-
-function startTruckJourney() {
-
-    /*
-        RESET POSITION
-    */
-
-    animatedTruck.style.transition =
-        "none";
-
-    animatedTruck.style.left =
-        "0%";
-
-
-    /*
-        IMPORTANT
-
-        scaleX(1)
-        = truck faces RIGHT
-
-        This is the forward direction.
-    */
-
-    animatedTruck.style.transform =
-        "translateX(-50%) scaleX(-1)";
-
-
-    /*
-        Remove cargo
-    */
-
-    cargoBoxes.classList.remove("show");
-
-
-    /*
-        Reset statuses
-    */
-
-    statusGoing.classList.add("active");
-
-    statusEmpty.classList.remove("active");
-
-    statusMatched.classList.remove("active");
-
-    statusLoaded.classList.remove("active");
-
-
-    routeStatus.textContent =
-        "GOING TO DESTINATION";
-
-
-    /*
-        Allow browser to register
-        the starting position.
-    */
-
-    setTimeout(() => {
-
-        /*
-            Move:
-
-            0% → 100%
-
-            START → DESTINATION
-        */
-
-        animatedTruck.style.transition =
-            "left 8s linear";
-
-        animatedTruck.style.left =
-            "100%";
-
-    }, 300);
-
-
-    /*
-        Destination reached
-    */
-
-    setTimeout(() => {
-
-        destinationReached();
-
-    }, 8500);
-
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 
-/* ==================================================
-   DESTINATION REACHED
-================================================== */
+/*
+   Small green line at top
+   appears on hover.
+*/
 
-function destinationReached() {
+.step::before {
 
-    /*
-        Stop "going" status
-    */
+    content: "";
 
-    statusGoing.classList.remove("active");
+    position: absolute;
 
-    statusEmpty.classList.add("active");
+    top: 0;
+    left: 0;
 
+    width: 0%;
+    height: 3px;
 
-    routeStatus.textContent =
-        "EMPTY RETURN";
+    background: var(--green);
 
-
-    /*
-        IMPORTANT
-
-        Truck has reached the RIGHT side.
-
-        Turn truck around.
-
-        scaleX(-1)
-        = truck now faces LEFT
-    */
-
-    animatedTruck.style.transform =
-        "translateX(-50%) scaleX(-1)";
-
-
-    /*
-        Prepare return shipment
-    */
-
-    shipmentStart.value =
-        routeData.end;
-
-    shipmentEnd.value =
-        routeData.start;
-
-
-    /*
-        Show shipment section
-    */
-
-    shipmentStep.classList.remove("hidden");
-
-
-    /*
-        Scroll to shipment section
-    */
-
-    setTimeout(() => {
-
-        shipmentStep.scrollIntoView({
-
-            behavior: "smooth",
-
-            block: "center"
-
-        });
-
-    }, 100);
-
+    transition:
+        width 0.35s ease;
 }
 
 
-/* ==================================================
-   FIND MATCH
-================================================== */
+.step:hover {
 
-findMatchBtn.addEventListener("click", function () {
+    transform: translateY(-8px);
 
-    const pickup =
-        shipmentStart.value.trim();
+    border-color:
+        rgba(64,230,160,0.5);
 
-    const destination =
-        shipmentEnd.value.trim();
+    background: #0d304a;
 
-    const required =
-        Number(requiredCapacity.value);
-
-
-    /* =========================
-       VALIDATION
-    ========================= */
-
-    if (!pickup || !destination || !required) {
-
-        alert(
-            "Please complete the shipment details."
-        );
-
-        return;
-    }
-
-
-    /* =========================
-       ROUTE MATCH
-    ========================= */
-
-    const routeMatches =
-
-        pickup.toLowerCase() ===
-        routeData.end.toLowerCase()
-
-        &&
-
-        destination.toLowerCase() ===
-        routeData.start.toLowerCase();
-
-
-    if (!routeMatches) {
-
-        alert(
-
-            `This truck is returning from ${routeData.end} to ${routeData.start}. Please use the matching return route.`
-
-        );
-
-        return;
-    }
-
-
-    /* =========================
-       CAPACITY MATCH
-    ========================= */
-
-    if (
-        required >
-        routeData.availableCapacity
-    ) {
-
-        alert(
-
-            `Only ${routeData.availableCapacity} Ton is available on the return journey.`
-
-        );
-
-        return;
-    }
-
-
-    /* =========================
-       SHOW MATCH CARD
-    ========================= */
-
-    matchCard.classList.remove("hidden");
-
-    searching.classList.remove("hidden");
-
-    matchResult.classList.add("hidden");
-
-
-    /*
-        Reset checks
-    */
-
-    checkRoute.textContent =
-        "○ Route Match";
-
-    checkCapacity.textContent =
-        "○ Capacity Match";
-
-    checkDate.textContent =
-        "○ Availability Match";
-
-
-    checkRoute.classList.remove("done");
-
-    checkCapacity.classList.remove("done");
-
-    checkDate.classList.remove("done");
-
-
-    /* =========================
-       ROUTE CHECK
-    ========================= */
-
-    setTimeout(() => {
-
-        checkRoute.textContent =
-            "✓ Route Match";
-
-        checkRoute.classList.add("done");
-
-    }, 1000);
-
-
-    /* =========================
-       CAPACITY CHECK
-    ========================= */
-
-    setTimeout(() => {
-
-        checkCapacity.textContent =
-            "✓ Capacity Match";
-
-        checkCapacity.classList.add("done");
-
-    }, 1800);
-
-
-    /* =========================
-       DATE CHECK
-    ========================= */
-
-    setTimeout(() => {
-
-        checkDate.textContent =
-            "✓ Availability Match";
-
-        checkDate.classList.add("done");
-
-    }, 2600);
-
-
-    /* =========================
-       SHOW MATCH
-    ========================= */
-
-    setTimeout(() => {
-
-        showMatch(
-            pickup,
-            destination,
-            required
-        );
-
-    }, 3300);
-
-
-    /*
-        Scroll
-    */
-
-    matchCard.scrollIntoView({
-
-        behavior: "smooth",
-
-        block: "center"
-
-    });
-
-});
-
-
-/* ==================================================
-   SHOW MATCH
-================================================== */
-
-function showMatch(
-    pickup,
-    destination,
-    required
-) {
-
-    searching.classList.add("hidden");
-
-    matchResult.classList.remove("hidden");
-
-
-    /*
-        Match is:
-
-        DESTINATION → PICKUP
-
-        Example:
-
-        Jaipur → Mumbai
-    */
-
-    matchStart.textContent =
-        pickup;
-
-    matchEnd.textContent =
-        destination;
-
-    matchAvailable.textContent =
-        routeData.availableCapacity;
-
-    matchRequired.textContent =
-        required;
-
-
-    /*
-        Update status
-    */
-
-    statusEmpty.classList.remove("active");
-
-    statusMatched.classList.add("active");
-
-
-    routeStatus.textContent =
-        "MATCH FOUND — 98%";
-
-
-    /*
-        Start return journey
-    */
-
-    setTimeout(() => {
-
-        animateReturnJourney();
-
-    }, 500);
-
+    box-shadow:
+        0 15px 35px rgba(0,0,0,0.25),
+        0 0 20px rgba(64,230,160,0.06);
 }
 
 
-/* ==================================================
-   RETURN JOURNEY
-   DESTINATION → START
-================================================== */
+.step:hover::before {
 
-function animateReturnJourney() {
-
-    /*
-        Truck is currently:
-
-        RIGHT SIDE = 100%
-
-        It is already facing LEFT
-        because destinationReached()
-        changed scaleX(-1).
-    */
-
-
-    /*
-        Make absolutely sure
-        it faces LEFT.
-    */
-
-    animatedTruck.style.transform =
-        "translateX(-50%) scaleX(-1)";
-
-
-    /*
-        Start return movement.
-
-        IMPORTANT:
-
-        100% → 0%
-
-        DESTINATION → START
-    */
-
-    setTimeout(() => {
-
-        animatedTruck.style.transition =
-            "left 10s linear";
-
-        animatedTruck.style.left =
-            "0%";
-
-    }, 400);
-
-
-    /*
-        Cargo appears while
-        truck is returning.
-    */
-
-    setTimeout(() => {
-
-        cargoBoxes.classList.add("show");
-
-        statusMatched.classList.remove("active");
-
-        statusLoaded.classList.add("active");
-
-        routeStatus.textContent =
-            "LOADED RETURN JOURNEY";
-
-    }, 3500);
-
+    width: 100%;
 }
-
-
-/* ==================================================
-   BOOKING
-================================================== */
-
-bookBtn.addEventListener("click", function () {
-
-    matchCard.classList.add("hidden");
-
-    bookingCard.classList.remove("hidden");
-
-
-    bookingCard.scrollIntoView({
-
-        behavior: "smooth",
-
-        block: "center"
-
-    });
-
-});
-/* =========================
-   TRACK SHIPMENT
-========================= */
-
-trackBtn.addEventListener("click", function () {
-
-    bookingCard.classList.add("hidden");
-    trackingCard.classList.remove("hidden");
-
-    /*
-        IMPORTANT:
-
-        The booked shipment is the RETURN shipment.
-
-        Original truck route:
-        Mumbai → Jaipur
-
-        Return shipment:
-        Jaipur → Mumbai
-
-        Therefore:
-
-        trackingStart = PICKUP
-        trackingEnd   = DESTINATION
-    */
-
-    const pickupLocation = routeData.end;
-    const destinationLocation = routeData.start;
-
-    trackingStart.textContent = pickupLocation;
-    trackingEnd.textContent = destinationLocation;
-
-
-    trackingCard.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
-
-
-    startTrackingAnimation(
-        pickupLocation,
-        destinationLocation
-    );
-
-});
 
 
 /* =========================
-   TRACKING ANIMATION
+   PROCESS NUMBER
 ========================= */
 
-function startTrackingAnimation(
-    pickupLocation,
-    destinationLocation
-) {
+.step-number {
 
-    /*
-        RESET TRUCK
+    color: var(--green);
 
-        LEFT SIDE = PICKUP
-        RIGHT SIDE = DESTINATION
-    */
+    font-size: 12px;
 
-    trackingTruck.style.transition = "none";
+    margin-bottom: 20px;
 
-    trackingTruck.style.left = "0%";
+    transition:
+        letter-spacing 0.3s ease,
+        transform 0.3s ease;
+}
 
 
-    /*
-        Truck faces RIGHT.
+.step:hover .step-number {
 
-        This means:
+    letter-spacing: 3px;
 
-        PICKUP
-          |
-          v
-
-        🚛  -------------------->
-
-                    DESTINATION
-    */
-
-    trackingTruck.style.transform =
-        "translateX(-50%) scaleX(-1)";
+    transform: translateX(3px);
+}
 
 
-    /*
-        Initial message
-    */
+/* =========================
+   PROCESS TITLE
+========================= */
 
-    trackingMessage.textContent =
-        `📦 Shipment picked up at ${pickupLocation}.`;
+.step h3 {
 
+    margin-bottom: 8px;
 
-    /*
-        Start movement.
-
-        0% = PICKUP
-        100% = DESTINATION
-
-        Therefore:
-
-        PICKUP → DESTINATION
-    */
-
-    setTimeout(() => {
-
-        trackingTruck.style.transition =
-            "left 10s linear";
-
-        trackingTruck.style.left =
-            "100%";
+    transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+}
 
 
-        trackingMessage.textContent =
-            `🚛 Shipment travelling from ${pickupLocation} to ${destinationLocation}.`;
+.step:hover h3 {
 
-    }, 300);
+    color: var(--green);
 
-
-    /*
-        Approaching destination
-    */
-
-    setTimeout(() => {
-
-        trackingMessage.textContent =
-            `📍 Shipment approaching ${destinationLocation}.`;
-
-    }, 7500);
+    transform: translateX(3px);
+}
 
 
-    /*
-        Delivered
-    */
+/* =========================
+   PROCESS DESCRIPTION
+========================= */
 
-    setTimeout(() => {
+.step p {
 
-        trackingMessage.textContent =
-            `✅ Shipment delivered at ${destinationLocation}.`;
+    color: var(--muted);
 
-    }, 10300);
+    font-size: 13px;
+
+    transition:
+        color 0.3s ease;
+}
+
+
+.step:hover p {
+
+    color: #d4e0e8;
+}
+
+
+/* ==================================================
+   WHY EMPTYMILES
+================================================== */
+
+.why-section {
+    background: #071f34;
+}
+
+.why-content {
+
+    max-width: 1100px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 60px;
+
+    align-items: center;
+}
+
+.why-content h2 {
+
+    font-size: clamp(30px, 4vw, 50px);
+
+    line-height: 1.1;
+}
+
+.why-content h2 span {
+
+    color: var(--green);
+}
+
+.benefits {
+
+    display: grid;
+
+    gap: 15px;
+}
+
+
+/* =========================
+   WHY CARD
+========================= */
+
+.benefit {
+
+    display: flex;
+
+    gap: 15px;
+
+    padding: 18px;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/*
+   Green indicator line
+*/
+
+.benefit::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 3px;
+    height: 0%;
+
+    background: var(--green);
+
+    transition:
+        height 0.35s ease;
+}
+
+
+.benefit:hover {
+
+    transform: translateX(7px);
+
+    border-color:
+        rgba(64,230,160,0.5);
+
+    background: #0d304a;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.25),
+        0 0 20px rgba(64,230,160,0.06);
+}
+
+
+.benefit:hover::before {
+
+    height: 100%;
+}
+
+
+/* =========================
+   WHY ICON
+========================= */
+
+.benefit > span {
+
+    font-size: 25px;
+
+    flex-shrink: 0;
+
+    transition:
+        transform 0.3s ease;
+}
+
+
+.benefit:hover > span {
+
+    transform:
+        scale(1.15)
+        rotate(-3deg);
+}
+
+
+/* =========================
+   WHY TITLE
+========================= */
+
+.benefit h3 {
+
+    font-size: 15px;
+
+    transition:
+        color 0.3s ease;
+}
+
+
+.benefit:hover h3 {
+
+    color: var(--green);
+}
+
+
+/* =========================
+   WHY DESCRIPTION
+========================= */
+
+.benefit p {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    transition:
+        color 0.3s ease;
+}
+
+
+.benefit:hover p {
+
+    color: #d4e0e8;
+}
+
+
+/* =========================
+   CTA
+========================= */
+
+.final-cta {
+
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(64,230,160,0.12),
+            transparent 60%
+        );
+}
+
+.final-cta h2 {
+
+    font-size: clamp(35px, 6vw, 65px);
+
+    text-transform: uppercase;
+}
+
+.final-cta p {
+
+    color: var(--green);
+
+    font-size: 20px;
+
+    margin: 10px 0 25px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+
+    padding: 35px 8%;
+
+    border-top: 1px solid var(--border);
+
+    text-align: center;
+
+    background: #041525;
+}
+
+.footer-logo {
+
+    font-size: 18px;
+}
+
+.footer-logo span {
+
+    color: var(--green);
+}
+
+footer p {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin: 8px 0 20px;
+}
+
+.footer-links {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 25px;
+
+    margin-bottom: 20px;
+}
+
+.footer-links a {
+
+    color: #a9bac8;
+
+    font-size: 12px;
+
+    transition:
+        color 0.25s ease;
+}
+
+.footer-links a:hover {
+
+    color: var(--green);
+}
+
+footer small {
+
+    color: #587083;
+
+    font-size: 10px;
+}
+
+
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden {
+
+    display: none;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes pulse {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+
+}
+
+
+@keyframes successPop {
+
+    0% {
+
+        transform:
+            scale(0.5);
+
+        opacity: 0;
+    }
+
+    70% {
+
+        transform:
+            scale(1.1);
+    }
+
+    100% {
+
+        transform:
+            scale(1);
+
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+    .navbar {
+
+        height: auto;
+
+        padding: 15px 5%;
+
+        flex-wrap: wrap;
+
+        gap: 12px;
+    }
+
+    .nav-links {
+
+        order: 3;
+
+        width: 100%;
+
+        justify-content: center;
+
+        gap: 18px;
+    }
+
+    .nav-button {
+
+        display: none;
+    }
+
+    section {
+
+        padding: 60px 5%;
+    }
+
+    .hero {
+
+        min-height: 500px;
+    }
+
+    .hero h1 {
+
+        font-size: 43px;
+    }
+
+    .hero p {
+
+        font-size: 15px;
+    }
+
+    .demo-card,
+    .route-card,
+    .match-card,
+    .booking-card,
+    .tracking-card {
+
+        padding: 22px;
+    }
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .route-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+    .road-container {
+
+        gap: 8px;
+    }
+
+    .location {
+
+        width: 70px;
+    }
+
+    .location strong {
+
+        font-size: 11px;
+
+        word-break: break-word;
+    }
+
+    .truck {
+
+        font-size: 30px;
+    }
+
+    .journey-status {
+
+        gap: 4px;
+    }
+
+    .status-line {
+
+        width: 15px;
+    }
+
+    .status-item span {
+
+        font-size: 16px;
+    }
+
+    .status-item small {
+
+        font-size: 7px;
+    }
+
+    .search-steps {
+
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+    .match-details {
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .steps {
+
+        grid-template-columns: 1fr;
+    }
+
+    .why-content {
+
+        grid-template-columns: 1fr;
+
+        gap: 35px;
+    }
+
+    .tracking-route {
+
+        margin: 35px 0 20px;
+    }
+
+    .tracking-point strong {
+
+        font-size: 12px;
+    }
+
+    .tracking-point small {
+
+        font-size: 9px;
+    }
+
+    .footer-links {
+
+        flex-wrap: wrap;
+
+        gap: 15px;
+    }
+
+
+    /* =========================
+       MOBILE HOVER FALLBACK
+    ========================= */
+
+    .step:hover {
+
+        transform: translateY(-4px);
+    }
+
+    .benefit:hover {
+
+        transform: translateX(3px);
+    }
 
 }
