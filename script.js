@@ -783,88 +783,112 @@ bookBtn.addEventListener("click", function () {
     });
 
 });
-
-
-/* ==================================================
+/* =========================
    TRACK SHIPMENT
-================================================== */
+========================= */
 
 trackBtn.addEventListener("click", function () {
 
     bookingCard.classList.add("hidden");
-
     trackingCard.classList.remove("hidden");
 
-
     /*
-        Update tracking locations
+        IMPORTANT:
+
+        The booked shipment is the RETURN shipment.
+
+        Original truck route:
+        Mumbai → Jaipur
+
+        Return shipment:
+        Jaipur → Mumbai
+
+        Therefore:
+
+        trackingStart = PICKUP
+        trackingEnd   = DESTINATION
     */
 
-    trackingStart.textContent =
-        routeData.start;
+    const pickupLocation = routeData.end;
+    const destinationLocation = routeData.start;
 
-    trackingEnd.textContent =
-        routeData.end;
+    trackingStart.textContent = pickupLocation;
+    trackingEnd.textContent = destinationLocation;
 
-
-    /*
-        Scroll to tracking
-    */
 
     trackingCard.scrollIntoView({
-
         behavior: "smooth",
-
         block: "center"
-
     });
 
 
-    /*
-        Start tracking
-    */
-
-    startTrackingAnimation();
+    startTrackingAnimation(
+        pickupLocation,
+        destinationLocation
+    );
 
 });
 
 
-/* ==================================================
+/* =========================
    TRACKING ANIMATION
-   START → DESTINATION
-================================================== */
+========================= */
 
-function startTrackingAnimation() {
+function startTrackingAnimation(
+    pickupLocation,
+    destinationLocation
+) {
 
     /*
-        VERY IMPORTANT
+        RESET TRUCK
 
-        Reset tracking truck.
-
-        Start at LEFT.
+        LEFT SIDE = PICKUP
+        RIGHT SIDE = DESTINATION
     */
 
-    trackingTruck.style.transition =
-        "none";
+    trackingTruck.style.transition = "none";
 
-    trackingTruck.style.left =
-        "0%";
+    trackingTruck.style.left = "0%";
 
 
- 
+    /*
+        Truck faces RIGHT.
+
+        This means:
+
+        PICKUP
+          |
+          v
+
+        🚛  -------------------->
+
+                    DESTINATION
+    */
+
     trackingTruck.style.transform =
         "translateX(-50%) scaleX(-1)";
 
 
+    /*
+        Initial message
+    */
 
     trackingMessage.textContent =
-        `📦 Shipment picked up at ${routeData.start}.`;
+        `📦 Shipment picked up at ${pickupLocation}.`;
 
 
+    /*
+        Start movement.
+
+        0% = PICKUP
+        100% = DESTINATION
+
+        Therefore:
+
+        PICKUP → DESTINATION
+    */
 
     setTimeout(() => {
-
-
 
         trackingTruck.style.transition =
             "left 10s linear";
@@ -874,24 +898,31 @@ function startTrackingAnimation() {
 
 
         trackingMessage.textContent =
-            `🚛 Shipment travelling from ${routeData.start} to ${routeData.end}.`;
+            `🚛 Shipment travelling from ${pickupLocation} to ${destinationLocation}.`;
 
     }, 300);
 
 
+    /*
+        Approaching destination
+    */
 
     setTimeout(() => {
 
         trackingMessage.textContent =
-            `📍 Shipment approaching ${routeData.end}.`;
+            `📍 Shipment approaching ${destinationLocation}.`;
 
     }, 7500);
 
 
+    /*
+        Delivered
+    */
+
     setTimeout(() => {
 
         trackingMessage.textContent =
-            `✅ Shipment delivered at ${routeData.end}.`;
+            `✅ Shipment delivered at ${destinationLocation}.`;
 
     }, 10300);
 
