@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LogiTrip - Truck Logistics</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <div class="logo">
+            <span class="logo-icon">🚚</span>
+            <span>LogiTrip</span>
+        </div>
+
+        <nav class="desktop-nav">
+            <a href="#dashboard">Dashboard</a>
+            <a href="#trips">Trips</a>
+            <a href="#loads">Loads</a>
+            <a href="#matches">Return Loads</a>
+        </nav>
+
+        <div class="profile">
+            <span class="notification">🔔</span>
+            <div class="avatar">HK</div>
+        </div>
+
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    </header>
+
+
+    <!-- ================= MOBILE MENU ================= -->
+
+    <div class="mobile-menu" id="mobileMenu">
+
+        <a href="#dashboard" onclick="closeMenu()">Dashboard</a>
+        <a href="#trips" onclick="closeMenu()">Trips</a>
+        <a href="#loads" onclick="closeMenu()">Loads</a>
+        <a href="#matches" onclick="closeMenu()">Return Loads</a>
+
+    </div>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+        <!-- HERO -->
+
+        <section class="hero" id="dashboard">
+
+            <div>
+                <p class="small-title">GOOD MORNING 👋</p>
+
+                <h1>
+                    Keep your trucks
+                    <span>loaded both ways.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Find return loads and reduce empty truck journeys.
+                </p>
+
+                <button class="primary-btn" onclick="scrollToMatches()">
+                    🔎 Find Return Loads
+                </button>
+            </div>
+
+            <div class="hero-truck">
+                🚚
+            </div>
+
+        </section>
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+                <div class="stat-icon">🚚</div>
+
+                <div>
+                    <p>Active Trucks</p>
+                    <h2 id="activeTrucks">12</h2>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+
+                <div>
+                    <p>Available Loads</p>
+                    <h2 id="availableLoads">24</h2>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon">🔄</div>
+
+                <div>
+                    <p>Return Matches</p>
+                    <h2 id="returnMatches">8</h2>
+                </div>
+            </div>
+
+
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+
+                <div>
+                    <p>Extra Earnings</p>
+                    <h2>₹1.24L</h2>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= ACTIVE TRIP ================= -->
+
+        <section class="section" id="trips">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="section-label">CURRENT JOURNEY</p>
+                    <h2>Active Trip</h2>
+                </div>
+
+                <span class="status active">
+                    ● In Transit
+                </span>
+
+            </div>
+
+
+            <div class="trip-card">
+
+                <div class="truck-info">
+
+                    <div class="truck-image">
+                        🚛
+                    </div>
+
+                    <div>
+                        <h3>MH 12 AB 1234</h3>
+                        <p>20 Ton Capacity</p>
+                    </div>
+
+                </div>
+
+
+                <div class="route">
+
+                    <div class="location">
+
+                        <div class="location-dot"></div>
+
+                        <div>
+                            <small>FROM</small>
+                            <strong>Indore</strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="route-line">
+
+                        <span>📦 Loaded</span>
+
+                    </div>
+
+
+                    <div class="location">
+
+                        <div class="location-dot destination"></div>
+
+                        <div>
+                            <small>TO</small>
+                            <strong>Mumbai</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="trip-details">
+
+                    <div>
+                        <span>Distance</span>
+                        <strong>585 km</strong>
+                    </div>
+
+                    <div>
+                        <span>Load</span>
+                        <strong>14 Ton</strong>
+                    </div>
+
+                    <div>
+                        <span>Expected</span>
+                        <strong>Tomorrow</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RETURN LOADS ================= -->
+
+        <section class="section" id="matches">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="section-label">SMART MATCHING</p>
+                    <h2>Return Loads</h2>
+                    <p class="section-description">
+                        Loads that match your truck's return journey.
+                    </p>
+                </div>
+
+                <button class="secondary-btn" onclick="showAllLoads()">
+                    View All
+                </button>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="search-box">
+
+                <span>🔎</span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search destination, material..."
+                    oninput="searchLoads()"
+                >
+
+            </div>
+
+
+            <!-- LOAD CARDS -->
+
+            <div class="loads-grid" id="loadsContainer">
+
+                <!-- JavaScript will insert cards -->
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= POST LOAD ================= -->
+
+        <section class="post-load" id="loads">
+
+            <div>
+
+                <p class="section-label">NEED TRANSPORT?</p>
+
+                <h2>Have a load to transport?</h2>
+
+                <p>
+                    Post your load and let nearby transporters find it.
+                </p>
+
+            </div>
+
+            <button class="primary-btn" onclick="openLoadModal()">
+                + Post a Load
+            </button>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= MODAL ================= -->
+
+    <div class="modal-overlay" id="modal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <h2>Post a Load</h2>
+
+                <button onclick="closeLoadModal()">×</button>
+
+            </div>
+
+
+            <form id="loadForm">
+
+                <label>
+                    Pickup Location
+
+                    <input
+                        type="text"
+                        id="pickup"
+                        placeholder="e.g. Mumbai"
+                        required
+                    >
+                </label>
+
+
+                <label>
+                    Destination
+
+                    <input
+                        type="text"
+                        id="destination"
+                        placeholder="e.g. Indore"
+                        required
+                    >
+                </label>
+
+
+                <label>
+                    Material
+
+                    <input
+                        type="text"
+                        id="material"
+                        placeholder="e.g. Steel"
+                        required
+                    >
+                </label>
+
+
+                <label>
+                    Weight
+
+                    <input
+                        type="number"
+                        id="weight"
+                        placeholder="Weight in Ton"
+                        required
+                    >
+                </label>
+
+
+                <label>
+                    Budget
+
+                    <input
+                        type="number"
+                        id="budget"
+                        placeholder="₹"
+                        required
+                    >
+                </label>
+
+
+                <button class="primary-btn full-width" type="submit">
+                    Post Load
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= BOTTOM MOBILE NAV ================= -->
+
+    <div class="bottom-nav">
+
+        <a href="#dashboard">
+            <span>🏠</span>
+            Home
+        </a>
+
+        <a href="#trips">
+            <span>🚚</span>
+            Trips
+        </a>
+
+        <a href="#loads">
+            <span>📦</span>
+            Loads
+        </a>
+
+        <a href="#matches">
+            <span>🔄</span>
+            Matches
+        </a>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+```
