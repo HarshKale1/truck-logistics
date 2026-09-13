@@ -63,7 +63,9 @@ const statusLoaded =
     document.getElementById("statusLoaded");
 
 
-/* Shipment */
+/* =========================
+   SHIPMENT
+========================= */
 
 const shipmentStart =
     document.getElementById("shipmentStart");
@@ -96,7 +98,9 @@ const checkDate =
     document.getElementById("checkDate");
 
 
-/* Match */
+/* =========================
+   MATCH
+========================= */
 
 const matchStart =
     document.getElementById("matchStart");
@@ -114,7 +118,9 @@ const bookBtn =
     document.getElementById("bookBtn");
 
 
-/* Booking */
+/* =========================
+   BOOKING
+========================= */
 
 const bookingCard =
     document.getElementById("bookingCard");
@@ -123,7 +129,9 @@ const trackBtn =
     document.getElementById("trackBtn");
 
 
-/* Tracking */
+/* =========================
+   TRACKING
+========================= */
 
 const trackingCard =
     document.getElementById("trackingCard");
@@ -146,17 +154,22 @@ const trackingMessage =
 ========================= */
 
 let routeData = {
+
     start: "",
+
     end: "",
+
     truckCapacity: 0,
+
     availableCapacity: 0
+
 };
 
 
-/* =========================
+/* ==================================================
    STEP 1
    POST TRUCK
-========================= */
+================================================== */
 
 postTruckBtn.addEventListener("click", function () {
 
@@ -173,7 +186,9 @@ postTruckBtn.addEventListener("click", function () {
         Number(availableCapacityInput.value);
 
 
-    /* Validation */
+    /* =========================
+       VALIDATION
+    ========================= */
 
     if (!start || !end) {
 
@@ -184,6 +199,7 @@ postTruckBtn.addEventListener("click", function () {
         return;
     }
 
+
     if (!truckCapacity || !availableCapacity) {
 
         alert(
@@ -192,6 +208,7 @@ postTruckBtn.addEventListener("click", function () {
 
         return;
     }
+
 
     if (availableCapacity > truckCapacity) {
 
@@ -203,64 +220,114 @@ postTruckBtn.addEventListener("click", function () {
     }
 
 
-    /* Save */
+    /* =========================
+       SAVE ROUTE
+    ========================= */
 
-    routeData.start = start;
-    routeData.end = end;
-    routeData.truckCapacity = truckCapacity;
-    routeData.availableCapacity = availableCapacity;
+    routeData.start =
+        start;
+
+    routeData.end =
+        end;
+
+    routeData.truckCapacity =
+        truckCapacity;
+
+    routeData.availableCapacity =
+        availableCapacity;
 
 
-    /* Update UI */
+    /* =========================
+       UPDATE UI
+    ========================= */
 
-    routeStart.textContent = start;
-    routeEnd.textContent = end;
+    routeStart.textContent =
+        start;
 
-    visualStart.textContent = start;
-    visualEnd.textContent = end;
+    routeEnd.textContent =
+        end;
+
+    visualStart.textContent =
+        start;
+
+    visualEnd.textContent =
+        end;
 
 
-    /* Show route */
+    /* =========================
+       SHOW ROUTE
+    ========================= */
 
     routeCard.classList.remove("hidden");
 
 
-    /* Scroll */
+    /* =========================
+       SCROLL
+    ========================= */
 
     setTimeout(() => {
 
         routeCard.scrollIntoView({
+
             behavior: "smooth",
+
             block: "center"
+
         });
 
     }, 200);
 
 
-    /* Start animation */
+    /* =========================
+       START TRUCK
+    ========================= */
 
     startTruckJourney();
 
 });
 
 
-/* =========================
+/* ==================================================
    TRUCK JOURNEY
-========================= */
+   START → DESTINATION
+================================================== */
 
 function startTruckJourney() {
 
-    /* Reset */
+    /*
+        RESET POSITION
+    */
 
-    animatedTruck.style.transition = "none";
-    animatedTruck.style.left = "0%";
+    animatedTruck.style.transition =
+        "none";
+
+    animatedTruck.style.left =
+        "0%";
+
+
+    /*
+        IMPORTANT
+
+        scaleX(1)
+        = truck faces RIGHT
+
+        This is the forward direction.
+    */
 
     animatedTruck.style.transform =
         "translateX(-50%) scaleX(-1)";
 
 
+    /*
+        Remove cargo
+    */
+
     cargoBoxes.classList.remove("show");
 
+
+    /*
+        Reset statuses
+    */
 
     statusGoing.classList.add("active");
 
@@ -276,15 +343,18 @@ function startTruckJourney() {
 
 
     /*
-        Small delay allows browser
-        to register starting position.
+        Allow browser to register
+        the starting position.
     */
 
     setTimeout(() => {
 
         /*
-            Truck slowly moves toward
-            destination.
+            Move:
+
+            0% → 100%
+
+            START → DESTINATION
         */
 
         animatedTruck.style.transition =
@@ -297,8 +367,7 @@ function startTruckJourney() {
 
 
     /*
-        Truck reaches destination
-        after 8 seconds.
+        Destination reached
     */
 
     setTimeout(() => {
@@ -310,28 +379,34 @@ function startTruckJourney() {
 }
 
 
-/* =========================
-   DESTINATION
-========================= */
+/* ==================================================
+   DESTINATION REACHED
+================================================== */
 
 function destinationReached() {
+
+    /*
+        Stop "going" status
+    */
 
     statusGoing.classList.remove("active");
 
     statusEmpty.classList.add("active");
+
 
     routeStatus.textContent =
         "EMPTY RETURN";
 
 
     /*
-        IMPORTANT:
+        IMPORTANT
 
-        Instead of reversing the truck
-        using negative movement,
+        Truck has reached the RIGHT side.
 
-        we visually TURN the truck
-        around using scaleX(-1).
+        Turn truck around.
+
+        scaleX(-1)
+        = truck now faces LEFT
     */
 
     animatedTruck.style.transform =
@@ -339,7 +414,7 @@ function destinationReached() {
 
 
     /*
-        Show shipment section
+        Prepare return shipment
     */
 
     shipmentStart.value =
@@ -349,14 +424,25 @@ function destinationReached() {
         routeData.start;
 
 
+    /*
+        Show shipment section
+    */
+
     shipmentStep.classList.remove("hidden");
 
+
+    /*
+        Scroll to shipment section
+    */
 
     setTimeout(() => {
 
         shipmentStep.scrollIntoView({
+
             behavior: "smooth",
+
             block: "center"
+
         });
 
     }, 100);
@@ -364,9 +450,9 @@ function destinationReached() {
 }
 
 
-/* =========================
+/* ==================================================
    FIND MATCH
-========================= */
+================================================== */
 
 findMatchBtn.addEventListener("click", function () {
 
@@ -380,6 +466,10 @@ findMatchBtn.addEventListener("click", function () {
         Number(requiredCapacity.value);
 
 
+    /* =========================
+       VALIDATION
+    ========================= */
+
     if (!pickup || !destination || !required) {
 
         alert(
@@ -390,38 +480,55 @@ findMatchBtn.addEventListener("click", function () {
     }
 
 
-    /*
-        Check route against
-        truck's return route.
-    */
+    /* =========================
+       ROUTE MATCH
+    ========================= */
 
     const routeMatches =
-        pickup.toLowerCase() === routeData.end.toLowerCase()
+
+        pickup.toLowerCase() ===
+        routeData.end.toLowerCase()
+
         &&
-        destination.toLowerCase() === routeData.start.toLowerCase();
+
+        destination.toLowerCase() ===
+        routeData.start.toLowerCase();
 
 
     if (!routeMatches) {
 
         alert(
+
             `This truck is returning from ${routeData.end} to ${routeData.start}. Please use the matching return route.`
+
         );
 
         return;
     }
 
 
-    if (required > routeData.availableCapacity) {
+    /* =========================
+       CAPACITY MATCH
+    ========================= */
+
+    if (
+        required >
+        routeData.availableCapacity
+    ) {
 
         alert(
+
             `Only ${routeData.availableCapacity} Ton is available on the return journey.`
+
         );
 
         return;
     }
 
 
-    /* Show matching screen */
+    /* =========================
+       SHOW MATCH CARD
+    ========================= */
 
     matchCard.classList.remove("hidden");
 
@@ -429,6 +536,10 @@ findMatchBtn.addEventListener("click", function () {
 
     matchResult.classList.add("hidden");
 
+
+    /*
+        Reset checks
+    */
 
     checkRoute.textContent =
         "○ Route Match";
@@ -440,6 +551,17 @@ findMatchBtn.addEventListener("click", function () {
         "○ Availability Match";
 
 
+    checkRoute.classList.remove("done");
+
+    checkCapacity.classList.remove("done");
+
+    checkDate.classList.remove("done");
+
+
+    /* =========================
+       ROUTE CHECK
+    ========================= */
+
     setTimeout(() => {
 
         checkRoute.textContent =
@@ -449,6 +571,10 @@ findMatchBtn.addEventListener("click", function () {
 
     }, 1000);
 
+
+    /* =========================
+       CAPACITY CHECK
+    ========================= */
 
     setTimeout(() => {
 
@@ -460,6 +586,10 @@ findMatchBtn.addEventListener("click", function () {
     }, 1800);
 
 
+    /* =========================
+       DATE CHECK
+    ========================= */
+
     setTimeout(() => {
 
         checkDate.textContent =
@@ -469,6 +599,10 @@ findMatchBtn.addEventListener("click", function () {
 
     }, 2600);
 
+
+    /* =========================
+       SHOW MATCH
+    ========================= */
 
     setTimeout(() => {
 
@@ -481,17 +615,24 @@ findMatchBtn.addEventListener("click", function () {
     }, 3300);
 
 
+    /*
+        Scroll
+    */
+
     matchCard.scrollIntoView({
+
         behavior: "smooth",
+
         block: "center"
+
     });
 
 });
 
 
-/* =========================
+/* ==================================================
    SHOW MATCH
-========================= */
+================================================== */
 
 function showMatch(
     pickup,
@@ -504,11 +645,21 @@ function showMatch(
     matchResult.classList.remove("hidden");
 
 
+    /*
+        Match is:
+
+        DESTINATION → PICKUP
+
+        Example:
+
+        Jaipur → Mumbai
+    */
+
     matchStart.textContent =
-        destination;
+        pickup;
 
     matchEnd.textContent =
-        pickup;
+        destination;
 
     matchAvailable.textContent =
         routeData.availableCapacity;
@@ -517,17 +668,21 @@ function showMatch(
         required;
 
 
+    /*
+        Update status
+    */
+
     statusEmpty.classList.remove("active");
 
     statusMatched.classList.add("active");
+
 
     routeStatus.textContent =
         "MATCH FOUND — 98%";
 
 
     /*
-        Start return movement
-        after match.
+        Start return journey
     */
 
     setTimeout(() => {
@@ -539,16 +694,27 @@ function showMatch(
 }
 
 
-/* =========================
+/* ==================================================
    RETURN JOURNEY
-========================= */
+   DESTINATION → START
+================================================== */
 
 function animateReturnJourney() {
 
     /*
-        Truck is currently at 100%.
+        Truck is currently:
 
-        We turn it around first.
+        RIGHT SIDE = 100%
+
+        It is already facing LEFT
+        because destinationReached()
+        changed scaleX(-1).
+    */
+
+
+    /*
+        Make absolutely sure
+        it faces LEFT.
     */
 
     animatedTruck.style.transform =
@@ -556,13 +722,13 @@ function animateReturnJourney() {
 
 
     /*
-        Then move it back toward
-        the starting location.
+        Start return movement.
 
-        Because the truck is already
-        visually facing the opposite
-        direction, it looks like
-        a real return journey.
+        IMPORTANT:
+
+        100% → 0%
+
+        DESTINATION → START
     */
 
     setTimeout(() => {
@@ -577,7 +743,8 @@ function animateReturnJourney() {
 
 
     /*
-        Show cargo during return.
+        Cargo appears while
+        truck is returning.
     */
 
     setTimeout(() => {
@@ -596,9 +763,9 @@ function animateReturnJourney() {
 }
 
 
-/* =========================
-   BOOK
-========================= */
+/* ==================================================
+   BOOKING
+================================================== */
 
 bookBtn.addEventListener("click", function () {
 
@@ -606,23 +773,32 @@ bookBtn.addEventListener("click", function () {
 
     bookingCard.classList.remove("hidden");
 
+
     bookingCard.scrollIntoView({
+
         behavior: "smooth",
+
         block: "center"
+
     });
 
 });
 
 
-/* =========================
-   TRACK
-========================= */
+/* ==================================================
+   TRACK SHIPMENT
+================================================== */
 
 trackBtn.addEventListener("click", function () {
 
     bookingCard.classList.add("hidden");
 
     trackingCard.classList.remove("hidden");
+
+
+    /*
+        Update tracking locations
+    */
 
     trackingStart.textContent =
         routeData.start;
@@ -631,49 +807,85 @@ trackBtn.addEventListener("click", function () {
         routeData.end;
 
 
+    /*
+        Scroll to tracking
+    */
+
     trackingCard.scrollIntoView({
+
         behavior: "smooth",
+
         block: "center"
+
     });
 
+
+    /*
+        Start tracking
+    */
 
     startTrackingAnimation();
 
 });
 
 
-/* =========================
+/* ==================================================
    TRACKING ANIMATION
-========================= */
+   START → DESTINATION
+================================================== */
 
 function startTrackingAnimation() {
 
-    trackingTruck.style.left = "0%";
+    /*
+        VERY IMPORTANT
+
+        Reset tracking truck.
+
+        Start at LEFT.
+    */
+
+    trackingTruck.style.transition =
+        "none";
+
+    trackingTruck.style.left =
+        "0%";
+
+
+ 
+    trackingTruck.style.transform =
+        "translateX(-50%) scaleX(-1)";
+
+
 
     trackingMessage.textContent =
-        "Shipment picked up and ready to move.";
+        `📦 Shipment picked up at ${routeData.start}.`;
 
-
-    setTimeout(() => {
-
-        trackingMessage.textContent =
-            `🚛 Shipment travelling from ${routeData.start} to ${routeData.end}.`;
-
-        trackingTruck.style.left =
-            "50%";
-
-    }, 1500);
 
 
     setTimeout(() => {
 
-        trackingMessage.textContent =
-            "Shipment is approaching destination.";
+
+
+        trackingTruck.style.transition =
+            "left 10s linear";
 
         trackingTruck.style.left =
             "100%";
 
-    }, 5000);
+
+        trackingMessage.textContent =
+            `🚛 Shipment travelling from ${routeData.start} to ${routeData.end}.`;
+
+    }, 300);
+
+
+
+    setTimeout(() => {
+
+        trackingMessage.textContent =
+            `📍 Shipment approaching ${routeData.end}.`;
+
+    }, 7500);
 
 
     setTimeout(() => {
@@ -681,6 +893,6 @@ function startTrackingAnimation() {
         trackingMessage.textContent =
             `✅ Shipment delivered at ${routeData.end}.`;
 
-    }, 7000);
+    }, 10300);
 
 }
