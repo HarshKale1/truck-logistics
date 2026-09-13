@@ -1,479 +1,686 @@
-
-/* =========================================================
-   EMPTYMILES JAVASCRIPT
-========================================================= */
-
-
-/* =========================================================
-   MOBILE MENU
-========================================================= */
-
-function toggleMobileMenu() {
-
-    const menu = document.getElementById("mobileMenu");
-
-    menu.classList.toggle("show");
-
-}
+/* ==========================================
+   EMPTYMILES
+   Dynamic Route + Matching Demo
+========================================== */
 
 
-function closeMobileMenu() {
+/* =========================
+   ELEMENTS
+========================= */
 
-    document
-        .getElementById("mobileMenu")
-        .classList.remove("show");
+const startInput =
+    document.getElementById("startLocation");
 
-}
+const endInput =
+    document.getElementById("endLocation");
+
+const truckCapacityInput =
+    document.getElementById("truckCapacity");
+
+const availableCapacityInput =
+    document.getElementById("availableCapacity");
+
+const postTruckBtn =
+    document.getElementById("postTruckBtn");
+
+const routeCard =
+    document.getElementById("routeCard");
+
+const shipmentStep =
+    document.getElementById("shipmentStep");
+
+const routeStart =
+    document.getElementById("routeStart");
+
+const routeEnd =
+    document.getElementById("routeEnd");
+
+const visualStart =
+    document.getElementById("visualStart");
+
+const visualEnd =
+    document.getElementById("visualEnd");
+
+const animatedTruck =
+    document.getElementById("animatedTruck");
+
+const cargoBoxes =
+    document.getElementById("cargoBoxes");
+
+const routeStatus =
+    document.getElementById("routeStatus");
+
+const statusGoing =
+    document.getElementById("statusGoing");
+
+const statusEmpty =
+    document.getElementById("statusEmpty");
+
+const statusMatched =
+    document.getElementById("statusMatched");
+
+const statusLoaded =
+    document.getElementById("statusLoaded");
 
 
-/* =========================================================
-   MODAL FUNCTIONS
-========================================================= */
+/* Shipment */
 
-function openModal(id) {
+const shipmentStart =
+    document.getElementById("shipmentStart");
 
-    document.getElementById(id).style.display = "flex";
+const shipmentEnd =
+    document.getElementById("shipmentEnd");
 
-}
+const requiredCapacity =
+    document.getElementById("requiredCapacity");
 
+const findMatchBtn =
+    document.getElementById("findMatchBtn");
 
-function closeModal(id) {
+const matchCard =
+    document.getElementById("matchCard");
 
-    document.getElementById(id).style.display = "none";
+const searching =
+    document.getElementById("searching");
 
-}
+const matchResult =
+    document.getElementById("matchResult");
 
+const checkRoute =
+    document.getElementById("checkRoute");
 
-/* =========================================================
-   TRUCK FLOW
-========================================================= */
+const checkCapacity =
+    document.getElementById("checkCapacity");
 
-function openTruckFlow() {
-
-    openModal("truckModal");
-
-}
-
-
-document
-    .getElementById("truckForm")
-    .addEventListener("submit", function(event) {
-
-        event.preventDefault();
-
-        closeModal("truckModal");
-
-        showCapacityPosted();
-
-    });
+const checkDate =
+    document.getElementById("checkDate");
 
 
-function showCapacityPosted() {
+/* Match */
 
-    setTimeout(function() {
+const matchStart =
+    document.getElementById("matchStart");
+
+const matchEnd =
+    document.getElementById("matchEnd");
+
+const matchAvailable =
+    document.getElementById("matchAvailable");
+
+const matchRequired =
+    document.getElementById("matchRequired");
+
+const bookBtn =
+    document.getElementById("bookBtn");
+
+
+/* Booking */
+
+const bookingCard =
+    document.getElementById("bookingCard");
+
+const trackBtn =
+    document.getElementById("trackBtn");
+
+
+/* Tracking */
+
+const trackingCard =
+    document.getElementById("trackingCard");
+
+const trackingStart =
+    document.getElementById("trackingStart");
+
+const trackingEnd =
+    document.getElementById("trackingEnd");
+
+const trackingTruck =
+    document.getElementById("trackingTruck");
+
+const trackingMessage =
+    document.getElementById("trackingMessage");
+
+
+/* =========================
+   DATA
+========================= */
+
+let routeData = {
+    start: "",
+    end: "",
+    truckCapacity: 0,
+    availableCapacity: 0
+};
+
+
+/* =========================
+   STEP 1
+   POST TRUCK
+========================= */
+
+postTruckBtn.addEventListener("click", function () {
+
+    const start =
+        startInput.value.trim();
+
+    const end =
+        endInput.value.trim();
+
+    const truckCapacity =
+        Number(truckCapacityInput.value);
+
+    const availableCapacity =
+        Number(availableCapacityInput.value);
+
+
+    /* Validation */
+
+    if (!start || !end) {
 
         alert(
-            "✅ RETURN CAPACITY POSTED!\n\n" +
-            "Truck: EM1024\n" +
-            "Route: Mumbai → Indore\n" +
-            "Available Capacity: 6 Ton\n\n" +
-            "EMPTYMILES will now look for suitable shipments."
+            "Please enter both starting location and destination."
         );
+
+        return;
+    }
+
+    if (!truckCapacity || !availableCapacity) {
+
+        alert(
+            "Please enter truck and available capacity."
+        );
+
+        return;
+    }
+
+    if (availableCapacity > truckCapacity) {
+
+        alert(
+            "Available return capacity cannot be greater than truck capacity."
+        );
+
+        return;
+    }
+
+
+    /* Save */
+
+    routeData.start = start;
+    routeData.end = end;
+    routeData.truckCapacity = truckCapacity;
+    routeData.availableCapacity = availableCapacity;
+
+
+    /* Update UI */
+
+    routeStart.textContent = start;
+    routeEnd.textContent = end;
+
+    visualStart.textContent = start;
+    visualEnd.textContent = end;
+
+
+    /* Show route */
+
+    routeCard.classList.remove("hidden");
+
+
+    /* Scroll */
+
+    setTimeout(() => {
+
+        routeCard.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
 
     }, 200);
 
+
+    /* Start animation */
+
+    startTruckJourney();
+
+});
+
+
+/* =========================
+   TRUCK JOURNEY
+========================= */
+
+function startTruckJourney() {
+
+    /* Reset */
+
+    animatedTruck.style.transition = "none";
+    animatedTruck.style.left = "0%";
+
+    animatedTruck.style.transform =
+        "translateX(-50%) scaleX(-1)";
+
+
+    cargoBoxes.classList.remove("show");
+
+
+    statusGoing.classList.add("active");
+
+    statusEmpty.classList.remove("active");
+
+    statusMatched.classList.remove("active");
+
+    statusLoaded.classList.remove("active");
+
+
+    routeStatus.textContent =
+        "GOING TO DESTINATION";
+
+
+    /*
+        Small delay allows browser
+        to register starting position.
+    */
+
+    setTimeout(() => {
+
+        /*
+            Truck slowly moves toward
+            destination.
+        */
+
+        animatedTruck.style.transition =
+            "left 8s linear";
+
+        animatedTruck.style.left =
+            "100%";
+
+    }, 300);
+
+
+    /*
+        Truck reaches destination
+        after 8 seconds.
+    */
+
+    setTimeout(() => {
+
+        destinationReached();
+
+    }, 8500);
+
 }
 
 
-/* =========================================================
-   SHIPMENT FLOW
-========================================================= */
+/* =========================
+   DESTINATION
+========================= */
 
-function openShipmentFlow() {
+function destinationReached() {
 
-    openModal("shipmentModal");
+    statusGoing.classList.remove("active");
+
+    statusEmpty.classList.add("active");
+
+    routeStatus.textContent =
+        "EMPTY RETURN";
+
+
+    /*
+        IMPORTANT:
+
+        Instead of reversing the truck
+        using negative movement,
+
+        we visually TURN the truck
+        around using scaleX(-1).
+    */
+
+    animatedTruck.style.transform =
+        "translateX(-50%) scaleX(-1)";
+
+
+    /*
+        Show shipment section
+    */
+
+    shipmentStart.value =
+        routeData.end;
+
+    shipmentEnd.value =
+        routeData.start;
+
+
+    shipmentStep.classList.remove("hidden");
+
+
+    setTimeout(() => {
+
+        shipmentStep.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }, 100);
 
 }
 
 
-document
-    .getElementById("shipmentForm")
-    .addEventListener("submit", function(event) {
+/* =========================
+   FIND MATCH
+========================= */
 
-        event.preventDefault();
+findMatchBtn.addEventListener("click", function () {
 
-        closeModal("shipmentModal");
+    const pickup =
+        shipmentStart.value.trim();
 
-        startMatching();
+    const destination =
+        shipmentEnd.value.trim();
 
-        document
-            .getElementById("business")
-            .scrollIntoView({
-                behavior: "smooth"
-            });
-
-    });
+    const required =
+        Number(requiredCapacity.value);
 
 
-/* =========================================================
-   MATCHING ANIMATION
-========================================================= */
+    if (!pickup || !destination || !required) {
 
-function startMatching() {
+        alert(
+            "Please complete the shipment details."
+        );
 
-    const result =
-        document.getElementById("matchingResult");
-
-
-    result.innerHTML = `
-
-        <div class="searching-animation">
-
-            <div class="search-icon">
-                🔍
-            </div>
-
-            <strong>
-                Searching Return Trucks...
-            </strong>
-
-            <span>
-                Starting matching engine
-            </span>
-
-        </div>
-
-    `;
+        return;
+    }
 
 
-    setTimeout(function() {
+    /*
+        Check route against
+        truck's return route.
+    */
 
-        result.innerHTML = `
+    const routeMatches =
+        pickup.toLowerCase() === routeData.end.toLowerCase()
+        &&
+        destination.toLowerCase() === routeData.start.toLowerCase();
 
-            <div class="searching-animation">
 
-                <div class="search-icon">
-                    🗺️
-                </div>
+    if (!routeMatches) {
 
-                <strong>
-                    Route Match ✓
-                </strong>
+        alert(
+            `This truck is returning from ${routeData.end} to ${routeData.start}. Please use the matching return route.`
+        );
 
-                <span>
-                    Mumbai → Indore
-                </span>
+        return;
+    }
 
-            </div>
 
-        `;
+    if (required > routeData.availableCapacity) {
+
+        alert(
+            `Only ${routeData.availableCapacity} Ton is available on the return journey.`
+        );
+
+        return;
+    }
+
+
+    /* Show matching screen */
+
+    matchCard.classList.remove("hidden");
+
+    searching.classList.remove("hidden");
+
+    matchResult.classList.add("hidden");
+
+
+    checkRoute.textContent =
+        "○ Route Match";
+
+    checkCapacity.textContent =
+        "○ Capacity Match";
+
+    checkDate.textContent =
+        "○ Availability Match";
+
+
+    setTimeout(() => {
+
+        checkRoute.textContent =
+            "✓ Route Match";
+
+        checkRoute.classList.add("done");
 
     }, 1000);
 
 
-    setTimeout(function() {
+    setTimeout(() => {
 
-        result.innerHTML = `
+        checkCapacity.textContent =
+            "✓ Capacity Match";
 
-            <div class="searching-animation">
+        checkCapacity.classList.add("done");
 
-                <div class="search-icon">
-                    📦
-                </div>
-
-                <strong>
-                    Capacity Match ✓
-                </strong>
-
-                <span>
-                    4 Ton required / 6 Ton available
-                </span>
-
-            </div>
-
-        `;
-
-    }, 2000);
+    }, 1800);
 
 
-    setTimeout(function() {
+    setTimeout(() => {
 
-        result.innerHTML = `
+        checkDate.textContent =
+            "✓ Availability Match";
 
-            <div class="searching-animation">
+        checkDate.classList.add("done");
 
-                <div class="search-icon">
-                    📅
-                </div>
-
-                <strong>
-                    Date Match ✓
-                </strong>
-
-                <span>
-                    15 September
-                </span>
-
-            </div>
-
-        `;
-
-    }, 3000);
+    }, 2600);
 
 
-    setTimeout(function() {
+    setTimeout(() => {
 
-        result.innerHTML = `
+        showMatch(
+            pickup,
+            destination,
+            required
+        );
 
-            <div class="match-result-active">
-
-                <div class="match-found-small">
-                    🎯 MATCH FOUND
-                </div>
-
-                <div class="match-score-large">
-                    98%
-                </div>
-
-                <p>
-                    Truck EM1024<br>
-                    6 Ton Available<br>
-                    4 Ton Required
-                </p>
-
-                <button onclick="bookShipment()">
-                    BOOK SHIPMENT
-                </button>
-
-            </div>
-
-        `;
-
-    }, 4000);
-
-}
+    }, 3300);
 
 
-/* =========================================================
+    matchCard.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+});
+
+
+/* =========================
    SHOW MATCH
-========================================================= */
+========================= */
 
-function showMatch(truckId, score) {
+function showMatch(
+    pickup,
+    destination,
+    required
+) {
 
-    document.getElementById("matchTruck").textContent =
-        truckId;
+    searching.classList.add("hidden");
 
-
-    const modal =
-        document.getElementById("matchModal");
-
-
-    modal.style.display = "flex";
+    matchResult.classList.remove("hidden");
 
 
-    const scoreElement =
-        modal.querySelector("h2");
+    matchStart.textContent =
+        destination;
+
+    matchEnd.textContent =
+        pickup;
+
+    matchAvailable.textContent =
+        routeData.availableCapacity;
+
+    matchRequired.textContent =
+        required;
 
 
-    scoreElement.textContent =
-        score + "% Match";
+    statusEmpty.classList.remove("active");
 
-}
+    statusMatched.classList.add("active");
 
-
-/* =========================================================
-   BOOK SHIPMENT
-========================================================= */
-
-function bookShipment() {
-
-    closeModal("matchModal");
-
-    setTimeout(function() {
-
-        openModal("successModal");
-
-    }, 300);
-
-}
+    routeStatus.textContent =
+        "MATCH FOUND — 98%";
 
 
-/* =========================================================
-   TRACKING
-========================================================= */
+    /*
+        Start return movement
+        after match.
+    */
 
-function goToTracking() {
+    setTimeout(() => {
 
-    closeModal("successModal");
-
-    document
-        .getElementById("tracking")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-
-}
-
-
-/* =========================================================
-   MATCHING SECTION
-========================================================= */
-
-function scrollToMatching() {
-
-    document
-        .getElementById("matching")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-
-}
-
-
-/* =========================================================
-   BOOKINGS
-========================================================= */
-
-function showBookings() {
-
-    alert(
-        "MY BOOKINGS\n\n" +
-
-        "Shipment EM4582\n" +
-        "Mumbai → Indore\n" +
-        "Status: Confirmed\n\n" +
-
-        "This will become a real booking list " +
-        "when the Spring Boot backend is connected."
-    );
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-function openLogin() {
-
-    openModal("loginModal");
-
-}
-
-
-function openSignup() {
-
-    alert(
-        "EMPTYMILES registration will be connected " +
-        "to the Spring Boot backend."
-    );
-
-}
-
-
-/* =========================================================
-   HERO STATUS ANIMATION
-========================================================= */
-
-const emptyStatus =
-    document.getElementById("emptyStatus");
-
-const matchedStatus =
-    document.getElementById("matchedStatus");
-
-const loadedStatus =
-    document.getElementById("loadedStatus");
-
-
-function animateHeroStatus() {
-
-    setTimeout(function() {
-
-        emptyStatus.style.opacity = "1";
-
-        matchedStatus.style.opacity = "0.45";
-
-        loadedStatus.style.opacity = "0.45";
+        animateReturnJourney();
 
     }, 500);
 
-
-    setTimeout(function() {
-
-        emptyStatus.style.opacity = "0.45";
-
-        matchedStatus.style.opacity = "1";
-
-        loadedStatus.style.opacity = "0.45";
-
-    }, 2800);
+}
 
 
-    setTimeout(function() {
+/* =========================
+   RETURN JOURNEY
+========================= */
 
-        emptyStatus.style.opacity = "0.45";
+function animateReturnJourney() {
 
-        matchedStatus.style.opacity = "0.45";
+    /*
+        Truck is currently at 100%.
 
-        loadedStatus.style.opacity = "1";
+        We turn it around first.
+    */
 
-    }, 5000);
+    animatedTruck.style.transform =
+        "translateX(-50%) scaleX(-1)";
+
+
+    /*
+        Then move it back toward
+        the starting location.
+
+        Because the truck is already
+        visually facing the opposite
+        direction, it looks like
+        a real return journey.
+    */
+
+    setTimeout(() => {
+
+        animatedTruck.style.transition =
+            "left 10s linear";
+
+        animatedTruck.style.left =
+            "0%";
+
+    }, 400);
+
+
+    /*
+        Show cargo during return.
+    */
+
+    setTimeout(() => {
+
+        cargoBoxes.classList.add("show");
+
+        statusMatched.classList.remove("active");
+
+        statusLoaded.classList.add("active");
+
+        routeStatus.textContent =
+            "LOADED RETURN JOURNEY";
+
+    }, 3500);
 
 }
 
 
-animateHeroStatus();
+/* =========================
+   BOOK
+========================= */
+
+bookBtn.addEventListener("click", function () {
+
+    matchCard.classList.add("hidden");
+
+    bookingCard.classList.remove("hidden");
+
+    bookingCard.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+
+});
 
 
-setInterval(
-    animateHeroStatus,
-    7000
-);
+/* =========================
+   TRACK
+========================= */
+
+trackBtn.addEventListener("click", function () {
+
+    bookingCard.classList.add("hidden");
+
+    trackingCard.classList.remove("hidden");
+
+    trackingStart.textContent =
+        routeData.start;
+
+    trackingEnd.textContent =
+        routeData.end;
 
 
-/* =========================================================
-   CLOSE MODAL WHEN CLICKING OUTSIDE
-========================================================= */
-
-document
-    .querySelectorAll(".modal-overlay")
-    .forEach(function(overlay) {
-
-        overlay.addEventListener(
-            "click",
-            function(event) {
-
-                if (event.target === overlay) {
-
-                    overlay.style.display = "none";
-
-                }
-
-            }
-        );
-
+    trackingCard.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
     });
 
 
-/* =========================================================
-   ESC KEY CLOSE MODAL
-========================================================= */
+    startTrackingAnimation();
 
-document.addEventListener(
-    "keydown",
-    function(event) {
+});
 
-        if (event.key === "Escape") {
 
-            document
-                .querySelectorAll(".modal-overlay")
-                .forEach(function(modal) {
+/* =========================
+   TRACKING ANIMATION
+========================= */
 
-                    modal.style.display = "none";
+function startTrackingAnimation() {
 
-                });
+    trackingTruck.style.left = "0%";
 
-        }
+    trackingMessage.textContent =
+        "Shipment picked up and ready to move.";
 
-    }
-);
+
+    setTimeout(() => {
+
+        trackingMessage.textContent =
+            `🚛 Shipment travelling from ${routeData.start} to ${routeData.end}.`;
+
+        trackingTruck.style.left =
+            "50%";
+
+    }, 1500);
+
+
+    setTimeout(() => {
+
+        trackingMessage.textContent =
+            "Shipment is approaching destination.";
+
+        trackingTruck.style.left =
+            "100%";
+
+    }, 5000);
+
+
+    setTimeout(() => {
+
+        trackingMessage.textContent =
+            `✅ Shipment delivered at ${routeData.end}.`;
+
+    }, 7000);
+
+}
