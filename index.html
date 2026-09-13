@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-        content="EMPTYMILES connects unused truck return capacity with businesses that need to move goods on the same route.">
+          content="EMPTYMILES - Turn empty return trips into revenue.">
 
     <title>EMPTYMILES | Turn Empty Return Trips into Revenue</title>
 
@@ -15,795 +14,566 @@
 
 <body>
 
-    <!-- =====================================================
-         NAVBAR
-    ====================================================== -->
+<!-- ================= NAVBAR ================= -->
 
-    <header class="navbar">
+<nav class="navbar">
 
-        <a href="#home" class="brand">
-            <div class="brand-truck">🚚</div>
+    <div class="logo">
+        <span class="logo-icon">🚛</span>
+        <div>
+            <strong>EMPTY<span>MILES</span></strong>
+            <small>Turn Empty Return Trips into Revenue.</small>
+        </div>
+    </div>
 
-            <div>
-                <strong>EMPTYMILES</strong>
-                <span>Turn Empty Return Trips into Revenue.</span>
-            </div>
-        </a>
+    <div class="nav-links">
+        <a href="#demo">Demo</a>
+        <a href="#how">How It Works</a>
+        <a href="#why">Why EMPTYMILES</a>
+    </div>
 
+    <a href="#demo" class="nav-button">
+        Get Started
+    </a>
 
-        <nav class="nav-links">
-
-            <a href="#home">Home</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#truck-owner">For Truck Owners</a>
-            <a href="#business">For Businesses</a>
-            <a href="#about">About Us</a>
-            <a href="#impact">Impact</a>
-            <a href="#contact">Contact</a>
-
-        </nav>
+</nav>
 
 
-        <div class="nav-actions">
+<!-- ================= HERO ================= -->
 
-            <button class="login-btn" onclick="openLogin()">
-                Login
-            </button>
+<section class="hero">
 
-            <button class="nav-cta" onclick="openSignup()">
-                Get Started
-            </button>
+    <div class="hero-content">
 
+        <div class="badge">
+            DIGITAL BACKHAUL MATCHING
         </div>
 
+        <h1>
+            Your Truck Is Already Going Back.
+            <span>Why Should It Go Back Empty?</span>
+        </h1>
 
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-            ☰
-        </button>
+        <p>
+            EMPTYMILES connects unused return truck capacity
+            with businesses that need to move goods on the same route.
+        </p>
 
-    </header>
+        <a href="#demo" class="primary-button">
+            Try the Demo →
+        </a>
+
+    </div>
+
+</section>
 
 
-    <!-- MOBILE MENU -->
+<!-- ================= MAIN DEMO ================= -->
 
-    <div class="mobile-menu" id="mobileMenu">
+<section class="demo-section" id="demo">
 
-        <a href="#home" onclick="closeMobileMenu()">Home</a>
-        <a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a>
-        <a href="#truck-owner" onclick="closeMobileMenu()">For Truck Owners</a>
-        <a href="#business" onclick="closeMobileMenu()">For Businesses</a>
-        <a href="#about" onclick="closeMobileMenu()">About Us</a>
-        <a href="#impact" onclick="closeMobileMenu()">Impact</a>
-        <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+    <div class="section-heading">
+
+        <div class="badge">
+            LIVE PROTOTYPE
+        </div>
+
+        <h2>
+            Turn an Empty Return Into a Match
+        </h2>
+
+        <p>
+            Enter your route and watch the complete EMPTYMILES flow.
+        </p>
 
     </div>
 
 
+    <!-- STEP 1 : TRUCK -->
 
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
+    <div class="demo-card" id="truckStep">
 
-    <section class="hero" id="home">
+        <div class="step-label">
+            STEP 1 · TRUCK OWNER
+        </div>
 
-        <div class="hero-content">
+        <h3>
+            Where is your truck going?
+        </h3>
 
-            <div class="eyebrow">
-                SMART BACKHAUL MATCHING
+        <div class="form-grid">
+
+            <div class="input-group">
+                <label>Starting Location</label>
+                <input
+                    type="text"
+                    id="startLocation"
+                    placeholder="e.g. Mumbai"
+                >
             </div>
 
-            <h1>
-                Your Truck Is Already Going Back.
-                <span>Why Should It Go Back Empty?</span>
-            </h1>
-
-            <p class="hero-subtitle">
-                EMPTYMILES connects unused return capacity with
-                businesses that need to move goods on the same route.
-            </p>
-
-
-            <div class="hero-buttons">
-
-                <button class="hero-primary" onclick="openTruckFlow()">
-                    🚛 I Have a Truck
-                </button>
-
-                <button class="hero-secondary" onclick="openShipmentFlow()">
-                    📦 I Have a Shipment
-                </button>
-
+            <div class="input-group">
+                <label>Destination</label>
+                <input
+                    type="text"
+                    id="endLocation"
+                    placeholder="e.g. Indore"
+                >
             </div>
 
+            <div class="input-group">
+                <label>Truck Capacity</label>
+                <input
+                    type="number"
+                    id="truckCapacity"
+                    placeholder="10"
+                    min="1"
+                >
+            </div>
 
-            <p class="hero-tagline">
-                “Don’t let trucks return empty. Let unused capacity earn.”
-            </p>
+            <div class="input-group">
+                <label>Available Return Capacity</label>
+                <input
+                    type="number"
+                    id="availableCapacity"
+                    placeholder="6"
+                    min="1"
+                >
+            </div>
+
+        </div>
+
+        <button class="primary-button" id="postTruckBtn">
+            🚛 Post Return Capacity
+        </button>
+
+    </div>
+
+
+    <!-- STEP 2 : ROUTE ANIMATION -->
+
+    <div class="route-card hidden" id="routeCard">
+
+        <div class="route-header">
+
+            <div>
+                <span class="route-label">OUTBOUND JOURNEY</span>
+
+                <h3>
+                    <span id="routeStart">Faridabad</span>
+                    <span class="arrow">→</span>
+                    <span id="routeEnd">Jaipur</span>
+                </h3>
+            </div>
+
+            <div class="route-status" id="routeStatus">
+                GOING TO DESTINATION
+            </div>
 
         </div>
 
 
-        <!-- HERO ANIMATION -->
+        <div class="road-container">
 
-        <div class="hero-animation">
-
-            <div class="route-label route-start">
-                📍 Mumbai
+            <div class="location left-location">
+                <div class="pin">📍</div>
+                <strong id="visualStart">Faridabad</strong>
             </div>
-
-            <div class="route-label route-end">
-                📍 Indore
-            </div>
-
 
             <div class="road">
 
                 <div class="road-line"></div>
 
-                <div class="animated-truck" id="heroTruck">
-                    🚚
-                </div>
-
-            </div>
-
-
-            <div class="hero-status">
-
-                <div class="status-box empty-status" id="emptyStatus">
-                    <strong>EMPTY</strong>
-                    <span>❌</span>
-                </div>
-
-                <div class="status-arrow">
-                    →
-                </div>
-
-                <div class="status-box matched-status" id="matchedStatus">
-                    <strong>MATCHED</strong>
-                    <span>🔄</span>
-                </div>
-
-                <div class="status-arrow">
-                    →
-                </div>
-
-                <div class="status-box loaded-status" id="loadedStatus">
-                    <strong>LOADED</strong>
-                    <span>✅</span>
-                </div>
-
-            </div>
-
-
-            <div class="cargo-animation" id="cargoAnimation">
-
-                <span>📦</span>
-                <span>📦</span>
-                <span>📦</span>
-
-            </div>
-
-
-            <div class="hero-mini-card">
-
-                <div class="mini-logo">
-                    EM
-                </div>
-
-                <div>
-                    <strong>EMPTYMILES</strong>
-                    <small>Return journey matched</small>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         HOW IT WORKS
-    ====================================================== -->
-
-    <section class="section how-section" id="how-it-works">
-
-        <div class="section-intro">
-
-            <span class="section-label">
-                HOW IT WORKS
-            </span>
-
-            <h2>
-                From Empty Miles to
-                <span>Earning Miles.</span>
-            </h2>
-
-            <p>
-                A simple four-step process designed to connect
-                unused return capacity with businesses that need
-                transportation.
-            </p>
-
-        </div>
-
-
-        <div class="steps-container">
-
-
-            <!-- STEP 1 -->
-
-            <div class="step-card">
-
-                <div class="step-number">
-                    01
-                </div>
-
-                <div class="step-icon">
+                <div class="truck" id="animatedTruck">
                     🚛
                 </div>
 
-                <span class="step-label">
-                    STEP 1 — POST
-                </span>
-
-                <h3>
-                    Post
-                </h3>
-
-                <p>
-                    Truck owners add their available return capacity.
-                </p>
-
-                <div class="example-box">
-
-                    <strong>
-                        Mumbai → Indore
-                    </strong>
-
-                    <span>
-                        Available Capacity: 6 Ton
-                    </span>
-
-                    <span>
-                        Date: 15 September
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="step-connector">
-                →
-            </div>
-
-
-            <!-- STEP 2 -->
-
-            <div class="step-card">
-
-                <div class="step-number">
-                    02
-                </div>
-
-                <div class="step-icon">
+                <div class="cargo" id="cargoBoxes">
                     📦
                 </div>
 
-                <span class="step-label">
-                    STEP 2 — MATCH
+            </div>
+
+            <div class="location right-location">
+                <div class="pin">📍</div>
+                <strong id="visualEnd">Jaipur</strong>
+            </div>
+
+        </div>
+
+
+        <div class="journey-status">
+
+            <div class="status-item active" id="statusGoing">
+                <span>🚛</span>
+                <small>GOING</small>
+            </div>
+
+            <div class="status-line"></div>
+
+            <div class="status-item" id="statusEmpty">
+                <span>❌</span>
+                <small>EMPTY</small>
+            </div>
+
+            <div class="status-line"></div>
+
+            <div class="status-item" id="statusMatched">
+                <span>🔄</span>
+                <small>MATCHED</small>
+            </div>
+
+            <div class="status-line"></div>
+
+            <div class="status-item" id="statusLoaded">
+                <span>📦</span>
+                <small>LOADED</small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STEP 3 : SHIPMENT -->
+
+    <div class="demo-card hidden" id="shipmentStep">
+
+        <div class="step-label">
+            STEP 2 · BUSINESS
+        </div>
+
+        <h3>
+            Need to move goods on this route?
+        </h3>
+
+        <div class="form-grid">
+
+            <div class="input-group">
+                <label>Pickup</label>
+                <input
+                    type="text"
+                    id="shipmentStart"
+                    placeholder="Pickup location"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Destination</label>
+                <input
+                    type="text"
+                    id="shipmentEnd"
+                    placeholder="Destination"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Cargo</label>
+                <input
+                    type="text"
+                    id="cargoType"
+                    placeholder="General Goods"
+                >
+            </div>
+
+            <div class="input-group">
+                <label>Required Capacity</label>
+                <input
+                    type="number"
+                    id="requiredCapacity"
+                    placeholder="4"
+                    min="1"
+                >
+            </div>
+
+        </div>
+
+        <button class="primary-button" id="findMatchBtn">
+            📦 Find Return Capacity
+        </button>
+
+    </div>
+
+
+    <!-- STEP 4 : MATCH -->
+
+    <div class="match-card hidden" id="matchCard">
+
+        <div class="searching" id="searching">
+
+            <div class="search-icon">
+                🔍
+            </div>
+
+            <h3>
+                Searching Return Trucks...
+            </h3>
+
+            <div class="search-steps">
+
+                <span id="checkRoute">
+                    ○ Route Match
                 </span>
 
-                <h3>
-                    Match
-                </h3>
-
-                <p>
-                    Businesses post their shipment requirements.
-                </p>
-
-                <div class="example-box">
-
-                    <strong>
-                        Mumbai → Indore
-                    </strong>
-
-                    <span>
-                        Required Capacity: 4 Ton
-                    </span>
-
-                    <span>
-                        General Goods
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="step-connector">
-                →
-            </div>
-
-
-            <!-- STEP 3 -->
-
-            <div class="step-card">
-
-                <div class="step-number">
-                    03
-                </div>
-
-                <div class="step-icon">
-                    🔍
-                </div>
-
-                <span class="step-label">
-                    STEP 3 — CONNECT
+                <span id="checkCapacity">
+                    ○ Capacity Match
                 </span>
 
-                <h3>
-                    Connect
-                </h3>
-
-                <p>
-                    EMPTYMILES compares route, date, capacity
-                    and cargo requirements.
-                </p>
-
-                <div class="matching-pill">
-                    Route ✓ &nbsp; Capacity ✓ &nbsp; Date ✓
-                </div>
-
-            </div>
-
-
-            <div class="step-connector">
-                →
-            </div>
-
-
-            <!-- STEP 4 -->
-
-            <div class="step-card">
-
-                <div class="step-number">
-                    04
-                </div>
-
-                <div class="step-icon">
-                    🚚📦
-                </div>
-
-                <span class="step-label">
-                    STEP 4 — MOVE
+                <span id="checkDate">
+                    ○ Availability Match
                 </span>
-
-                <h3>
-                    Move
-                </h3>
-
-                <p>
-                    The shipment is booked and the truck carries
-                    cargo on its return journey.
-                </p>
-
-                <div class="success-pill">
-                    ✓ RETURN JOURNEY LOADED
-                </div>
 
             </div>
 
         </div>
 
-    </section>
 
+        <div class="match-result hidden" id="matchResult">
 
+            <div class="match-badge">
+                🎯 MATCH FOUND
+            </div>
 
-    <!-- =====================================================
-         LIVE MATCHING DEMO
-    ====================================================== -->
+            <div class="match-score">
+                98%
+                <small>Match</small>
+            </div>
 
-    <section class="section dark-section" id="matching">
-
-        <div class="section-intro light">
-
-            <span class="section-label">
-                LIVE MATCHING DEMO
-            </span>
-
-            <h2>
-                Find Your Perfect
-                <span>Return Match.</span>
-            </h2>
-
-            <p>
-                See how unused return capacity can be matched
-                with a shipment requirement.
-            </p>
-
-        </div>
-
-
-        <div class="matching-dashboard">
-
-            <div class="dashboard-top">
+            <div class="match-details">
 
                 <div>
-                    <span>AVAILABLE TRUCKS</span>
-                    <h3>Return Capacity</h3>
+                    <small>TRUCK</small>
+                    <strong>EM1024</strong>
                 </div>
 
-                <div class="live-indicator">
-                    <span></span>
-                    DEMO DATA
+                <div>
+                    <small>ROUTE</small>
+                    <strong>
+                        <span id="matchStart"></span>
+                        →
+                        <span id="matchEnd"></span>
+                    </strong>
+                </div>
+
+                <div>
+                    <small>AVAILABLE</small>
+                    <strong>
+                        <span id="matchAvailable"></span> Ton
+                    </strong>
+                </div>
+
+                <div>
+                    <small>REQUIRED</small>
+                    <strong>
+                        <span id="matchRequired"></span> Ton
+                    </strong>
                 </div>
 
             </div>
 
+            <button class="primary-button" id="bookBtn">
+                BOOK SHIPMENT →
+            </button>
 
-            <div class="table-wrapper">
+        </div>
 
-                <table>
-
-                    <thead>
-
-                        <tr>
-                            <th>Truck</th>
-                            <th>Route</th>
-                            <th>Available</th>
-                            <th>Date</th>
-                            <th>Match</th>
-                            <th></th>
-                        </tr>
-
-                    </thead>
+    </div>
 
 
-                    <tbody>
+    <!-- STEP 5 : BOOKING -->
 
-                        <tr class="best-row">
+    <div class="booking-card hidden" id="bookingCard">
 
-                            <td>
-                                <strong>EM1024</strong>
-                            </td>
+        <div class="success-icon">
+            ✓
+        </div>
 
-                            <td>
-                                Mumbai → Indore
-                            </td>
+        <h2>
+            Booking Confirmed
+        </h2>
 
-                            <td>
-                                6 Ton
-                            </td>
+        <p>
+            Shipment <strong>EM4582</strong> has been matched
+            with truck <strong>EM1024</strong>.
+        </p>
 
-                            <td>
-                                15 Sep
-                            </td>
+        <button class="secondary-button" id="trackBtn">
+            🚛 Track Shipment
+        </button>
 
-                            <td>
-                                <span class="match-percent best">
-                                    98%
-                                </span>
-                            </td>
-
-                            <td>
-                                <button
-                                    class="view-match"
-                                    onclick="showMatch('EM1024', 98)">
-                                    VIEW MATCH →
-                                </button>
-                            </td>
-
-                        </tr>
+    </div>
 
 
-                        <tr>
+    <!-- STEP 6 : TRACKING -->
 
-                            <td>
-                                <strong>EM1087</strong>
-                            </td>
+    <div class="tracking-card hidden" id="trackingCard">
 
-                            <td>
-                                Mumbai → Bhopal
-                            </td>
+        <div class="tracking-header">
 
-                            <td>
-                                5 Ton
-                            </td>
-
-                            <td>
-                                15 Sep
-                            </td>
-
-                            <td>
-                                <span class="match-percent">
-                                    76%
-                                </span>
-                            </td>
-
-                            <td>
-                                <button
-                                    class="view-match"
-                                    onclick="showMatch('EM1087', 76)">
-                                    VIEW MATCH →
-                                </button>
-                            </td>
-
-                        </tr>
-
-
-                        <tr>
-
-                            <td>
-                                <strong>EM1132</strong>
-                            </td>
-
-                            <td>
-                                Mumbai → Indore
-                            </td>
-
-                            <td>
-                                4 Ton
-                            </td>
-
-                            <td>
-                                16 Sep
-                            </td>
-
-                            <td>
-                                <span class="match-percent">
-                                    72%
-                                </span>
-                            </td>
-
-                            <td>
-                                <button
-                                    class="view-match"
-                                    onclick="showMatch('EM1132', 72)">
-                                    VIEW MATCH →
-                                </button>
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
+            <div>
+                <small>SHIPMENT</small>
+                <h3>EM4582</h3>
             </div>
 
-
-            <div class="best-match-banner">
-
-                🔥 BEST MATCH
-
-                <strong>
-                    EM1024
-                </strong>
-
-                <span>
-                    Mumbai → Indore • 6 Ton • 98% Match
-                </span>
-
+            <div class="tracking-live">
+                ● LIVE PROTOTYPE
             </div>
 
         </div>
 
-    </section>
 
+        <div class="tracking-route">
 
+            <div class="tracking-point active">
 
-    <!-- =====================================================
-         DASHBOARDS
-    ====================================================== -->
+                <span>●</span>
 
-    <section class="section dashboard-section">
+                <div>
+                    <strong id="trackingStart">
+                        Faridabad
+                    </strong>
 
-        <div class="dashboard-grid">
-
-
-            <!-- TRUCK OWNER -->
-
-            <div class="product-dashboard" id="truck-owner">
-
-                <div class="dashboard-heading">
-
-                    <span class="section-label">
-                        TRUCK OWNER DASHBOARD
-                    </span>
-
-                    <h2>
-                        Turn Your Return Journey
-                        Into <span>Revenue.</span>
-                    </h2>
-
-                </div>
-
-
-                <div class="truck-dashboard-card">
-
-                    <div class="truck-card-header">
-
-                        <div class="dashboard-truck">
-                            🚚
-                        </div>
-
-                        <div>
-
-                            <span>MY TRUCK</span>
-
-                            <h3>
-                                EM1024
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="truck-route-display">
-
-                        <div>
-                            <small>ROUTE</small>
-                            <strong>Mumbai → Indore</strong>
-                        </div>
-
-                        <div>
-                            <small>TOTAL CAPACITY</small>
-                            <strong>10 Ton</strong>
-                        </div>
-
-                        <div>
-                            <small>AVAILABLE RETURN</small>
-                            <strong class="green-text">6 Ton</strong>
-                        </div>
-
-                    </div>
-
-
-                    <div class="available-status">
-                        🟢 RETURN CAPACITY AVAILABLE
-                    </div>
-
-
-                    <div class="dashboard-buttons">
-
-                        <button onclick="openTruckFlow()">
-                            Post Capacity
-                        </button>
-
-                        <button onclick="scrollToMatching()">
-                            View Matches
-                        </button>
-
-                        <button onclick="showBookings()">
-                            My Bookings
-                        </button>
-
-                    </div>
-
+                    <small>
+                        Picked Up
+                    </small>
                 </div>
 
             </div>
 
 
+            <div class="tracking-line">
 
-            <!-- BUSINESS -->
-
-            <div class="product-dashboard" id="business">
-
-                <div class="dashboard-heading">
-
-                    <span class="section-label">
-                        SHIPPER / BUSINESS DASHBOARD
-                    </span>
-
-                    <h2>
-                        Move Your Goods
-                        <span>Smarter.</span>
-                    </h2>
-
+                <div
+                    class="tracking-truck"
+                    id="trackingTruck">
+                    🚛
                 </div>
 
-
-                <div class="business-dashboard-card">
-
-                    <div class="shipment-form">
-
-                        <label>
-                            Pickup
-                            <input
-                                type="text"
-                                id="businessPickup"
-                                value="Mumbai">
-                        </label>
+            </div>
 
 
-                        <label>
-                            Destination
-                            <input
-                                type="text"
-                                id="businessDestination"
-                                value="Indore">
-                        </label>
+            <div class="tracking-point">
 
+                <span>○</span>
 
-                        <label>
-                            Cargo
-                            <input
-                                type="text"
-                                value="General Goods">
-                        </label>
+                <div>
+                    <strong id="trackingEnd">
+                        Jaipur
+                    </strong>
 
-
-                        <label>
-                            Weight
-                            <input
-                                type="text"
-                                value="4 Ton">
-                        </label>
-
-
-                        <label>
-                            Pickup Date
-                            <input
-                                type="text"
-                                value="15 September">
-                        </label>
-
-
-                        <button
-                            class="find-capacity-btn"
-                            onclick="startMatching()">
-                            FIND RETURN CAPACITY
-                        </button>
-
-                    </div>
-
-
-                    <div class="matching-result" id="matchingResult">
-
-                        <div class="searching-animation">
-
-                            <div class="search-icon">
-                                🔍
-                            </div>
-
-                            <strong>
-                                Ready to search
-                            </strong>
-
-                            <span>
-                                Find a suitable return truck
-                            </span>
-
-                        </div>
-
-                    </div>
-
+                    <small>
+                        Delivery Pending
+                    </small>
                 </div>
 
             </div>
 
         </div>
 
-    </section>
+
+        <div class="tracking-message" id="trackingMessage">
+            Shipment picked up and ready to move.
+        </div>
+
+    </div>
+
+</section>
 
 
+<!-- ================= HOW IT WORKS ================= -->
 
-    <!-- =====================================================
-         WHY EMPTYMILES
-    ====================================================== -->
+<section class="how-section" id="how">
 
-    <section class="section why-section" id="about">
+    <div class="section-heading">
 
-        <div class="section-intro">
+        <div class="badge">
+            SIMPLE PROCESS
+        </div>
 
-            <span class="section-label">
-                WHY EMPTYMILES?
-            </span>
+        <h2>
+            From Empty Miles to Earning Miles.
+        </h2>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">01</div>
+
+            <div>
+                <h3>POST</h3>
+
+                <p>
+                    Truck owners post unused return capacity.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">02</div>
+
+            <div>
+                <h3>MATCH</h3>
+
+                <p>
+                    Businesses post shipment requirements.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">03</div>
+
+            <div>
+                <h3>CONNECT</h3>
+
+                <p>
+                    EMPTYMILES matches route, capacity and availability.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">04</div>
+
+            <div>
+                <h3>MOVE</h3>
+
+                <p>
+                    The shipment travels on an existing return journey.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= WHY ================= -->
+
+<section class="why-section" id="why">
+
+    <div class="why-content">
+
+        <div>
+
+            <div class="badge">
+                WHY EMPTYMILES
+            </div>
 
             <h2>
                 We Don't Add More Trucks.
@@ -813,1202 +583,78 @@
         </div>
 
 
-        <div class="feature-grid">
+        <div class="benefits">
 
-            <div class="feature-card">
-
-                <div class="feature-icon">
-                    🚛
-                </div>
-
-                <h3>
-                    Better Capacity Utilization
-                </h3>
-
-                <p>
-                    Existing truck capacity can be utilized more
-                    effectively on return journeys.
-                </p>
-
-            </div>
-
-
-            <div class="feature-card">
-
-                <div class="feature-icon">
-                    💰
-                </div>
-
-                <h3>
-                    New Earning Opportunity
-                </h3>
-
-                <p>
-                    Truck owners can explore additional revenue
-                    opportunities from unused return capacity.
-                </p>
-
-            </div>
-
-
-            <div class="feature-card">
-
-                <div class="feature-icon">
-                    📦
-                </div>
-
-                <h3>
-                    Smarter Freight Access
-                </h3>
-
-                <p>
-                    Businesses get a digital option to discover
-                    suitable available return capacity.
-                </p>
-
-            </div>
-
-
-            <div class="feature-card">
-
-                <div class="feature-icon">
-                    🌱
-                </div>
-
-                <h3>
-                    More Efficient Transport
-                </h3>
-
-                <p>
-                    Moving additional cargo on an existing journey
-                    has the potential to improve transport efficiency.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         USP
-    ====================================================== -->
-
-    <section class="section usp-section">
-
-        <div class="section-intro">
-
-            <span class="section-label">
-                OUR USP
-            </span>
-
-            <h2>
-                What Makes EMPTYMILES
-                <span>Different?</span>
-            </h2>
-
-        </div>
-
-
-        <div class="usp-comparison">
-
-
-            <div class="usp-box traditional">
-
-                <span class="usp-title">
-                    ❌ TRADITIONAL SEARCH
-                </span>
-
-                <div class="usp-truck">
-                    🚛
-                </div>
-
-                <p>
-                    “I need a truck
-                    <br>
-                    → Find me a truck.”
-                </p>
-
-            </div>
-
-
-            <div class="usp-middle">
-
-                <div class="usp-arrow">
-                    →
-                </div>
-
-                <strong>
-                    UNUSED CAPACITY
-                </strong>
-
-                <span>
-                    DIGITAL MATCH
-                </span>
-
-                <strong>
-                    REVENUE
-                </strong>
-
-                <div class="usp-arrow">
-                    →
-                </div>
-
-            </div>
-
-
-            <div class="usp-box emptymiles">
-
-                <span class="usp-title">
-                    ✅ EMPTYMILES BACKHAUL MATCHING
-                </span>
-
-                <div class="usp-truck">
-                    🚚📦
-                </div>
-
-                <p>
-                    “Which truck is already going there
-                    <br>
-                    → And has unused capacity?”
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         BUSINESS MODEL
-    ====================================================== -->
-
-    <section class="section business-model">
-
-        <div class="section-intro">
-
-            <span class="section-label">
-                BUSINESS MODEL
-            </span>
-
-            <h2>
-                How EMPTYMILES
-                <span>Makes Money.</span>
-            </h2>
-
-        </div>
-
-
-        <div class="revenue-grid">
-
-            <div class="revenue-card">
-
-                <div class="revenue-number">
-                    01
-                </div>
-
-                <div class="revenue-icon">
-                    ₹
-                </div>
-
-                <h3>
-                    Transaction Commission
-                </h3>
-
-                <p>
-                    Platform fee or commission on successfully
-                    matched and booked shipments.
-                </p>
-
-            </div>
-
-
-            <div class="revenue-card">
-
-                <div class="revenue-number">
-                    02
-                </div>
-
-                <div class="revenue-icon">
-                    👑
-                </div>
-
-                <h3>
-                    Premium Subscription
-                </h3>
-
-                <p>
-                    Premium plans for frequent truck owners,
-                    businesses and logistics operators.
-                </p>
-
-            </div>
-
-
-            <div class="revenue-card">
-
-                <div class="revenue-number">
-                    03
-                </div>
-
-                <div class="revenue-icon">
-                    🏢
-                </div>
-
-                <h3>
-                    Enterprise Solutions
-                </h3>
-
-                <p>
-                    Advanced dashboards and optimization services
-                    for large fleets and logistics businesses.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         TRUST & SAFETY
-    ====================================================== -->
-
-    <section class="section trust-section">
-
-        <div class="trust-content">
-
-            <div>
-
-                <span class="section-label">
-                    TRUST & SAFETY
-                </span>
-
-                <h2>
-                    Verified.
-                    <span>Transparent.</span>
-                    Connected.
-                </h2>
-
-                <p>
-                    Prototype features designed around safer,
-                    more transparent freight connections.
-                </p>
-
-            </div>
-
-
-            <div class="trust-grid">
-
-                <div>✅ User Verification</div>
-                <div>🚛 Vehicle Verification</div>
-                <div>🏢 Business Verification</div>
-                <div>📋 Booking Records</div>
-                <div>⭐ Ratings & Reviews</div>
-                <div>📍 Shipment Tracking</div>
-                <div>📄 Digital Documentation</div>
-
-            </div>
-
-        </div>
-
-
-        <div class="trust-bottom">
-
-            <strong>
-                Your Cargo. Your Route. Your Visibility.
-            </strong>
-
-            <p>
-                Prototype note: actual launch would require appropriate
-                verification, insurance, liability and applicable
-                transport/legal requirements to be established.
-            </p>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         TRACK SHIPMENT
-    ====================================================== -->
-
-    <section class="section tracking-section" id="tracking">
-
-        <div class="section-intro">
-
-            <span class="section-label">
-                TRACK SHIPMENT
-            </span>
-
-            <h2>
-                Know Where Your
-                <span>Shipment Is.</span>
-            </h2>
-
-        </div>
-
-
-        <div class="tracking-card">
-
-            <div class="tracking-header">
-
+            <div class="benefit">
+                <span>🚛</span>
                 <div>
-                    <span>SHIPMENT</span>
-                    <h3>
-                        EM4582
-                    </h3>
+                    <h3>Better Capacity Utilization</h3>
+                    <p>
+                        Use available return capacity more effectively.
+                    </p>
                 </div>
-
-                <span class="tracking-live">
-                    ● DEMO TRACKING
-                </span>
-
             </div>
 
 
-            <div class="tracking-road">
-
-                <div class="tracking-point completed">
-
-                    <div class="point-icon">
-                        ✓
-                    </div>
-
-                    <strong>
-                        Mumbai
-                    </strong>
-
-                    <span>
-                        Picked Up
-                    </span>
-
-                </div>
-
-
-                <div class="tracking-line">
-
-                    <div class="moving-truck">
-                        🚚
-                    </div>
-
-                </div>
-
-
-                <div class="tracking-point current">
-
-                    <div class="point-icon">
-                        🚛
-                    </div>
-
-                    <strong>
-                        On Route
-                    </strong>
-
-                    <span>
-                        In Transit
-                    </span>
-
-                </div>
-
-
-                <div class="tracking-line">
-                </div>
-
-
-                <div class="tracking-point">
-
-                    <div class="point-icon">
-                        ○
-                    </div>
-
-                    <strong>
-                        Indore
-                    </strong>
-
-                    <span>
-                        Delivery Pending
-                    </span>
-
-                </div>
-
-
-                <div class="tracking-line">
-                </div>
-
-
-                <div class="tracking-point">
-
-                    <div class="point-icon">
-                        ✓
-                    </div>
-
-                    <strong>
-                        Delivered
-                    </strong>
-
-                    <span>
-                        Pending
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         IMPACT / SDG
-    ====================================================== -->
-
-    <section class="section impact-section" id="impact">
-
-        <div class="section-intro">
-
-            <span class="section-label">
-                IMPACT
-            </span>
-
-            <h2>
-                Moving Goods.
-                <span>Creating Impact.</span>
-            </h2>
-
-            <p>
-                EMPTYMILES is designed to explore more efficient
-                use of existing freight capacity.
-            </p>
-
-        </div>
-
-
-        <div class="sdg-grid">
-
-            <div class="sdg-card">
-
-                <div class="sdg-icon">
-                    8
-                </div>
-
-                <h3>
-                    SDG 8
-                </h3>
-
-                <strong>
-                    Decent Work & Economic Growth
-                </strong>
-
-                <p>
-                    Supporting transport operators and businesses
-                    in improving productivity and economic activity.
-                </p>
-
-            </div>
-
-
-            <div class="sdg-card">
-
-                <div class="sdg-icon">
-                    9
-                </div>
-
-                <h3>
-                    SDG 9
-                </h3>
-
-                <strong>
-                    Industry, Innovation & Infrastructure
-                </strong>
-
-                <p>
-                    Using digital innovation to explore better
-                    freight capacity utilization.
-                </p>
-
-            </div>
-
-
-            <div class="sdg-card">
-
-                <div class="sdg-icon">
-                    11
-                </div>
-
-                <h3>
-                    SDG 11
-                </h3>
-
-                <strong>
-                    Sustainable Cities & Communities
-                </strong>
-
-                <p>
-                    Contributing toward more efficient and
-                    sustainable transport systems.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         PILOT
-    ====================================================== -->
-
-    <section class="section pilot-section">
-
-        <div class="pilot-content">
-
-            <span class="section-label">
-                OUR PILOT
-            </span>
-
-            <h2>
-                Starting With One Route.
-                <span>Scaling Across India.</span>
-            </h2>
-
-            <p>
-                Proposed pilot corridor:
-            </p>
-
-            <div class="pilot-route">
-                📍 INDORE
-                <span>↔</span>
-                MUMBAI 📍
-            </div>
-
-            <p class="future-text">
-                Future expansion plans may explore:
-            </p>
-
-            <div class="future-routes">
-
-                <span>Indore ↔ Ahmedabad</span>
-                <span>Indore ↔ Pune</span>
-                <span>Indore ↔ Delhi</span>
-                <span>Indore ↔ Other Freight Corridors</span>
-
-            </div>
-
-        </div>
-
-
-        <div class="route-map">
-
-            <div class="map-line"></div>
-
-            <div class="map-pin pin-indore">
-                📍
-                <span>Indore</span>
-            </div>
-
-            <div class="map-truck">
-                🚚
-            </div>
-
-            <div class="map-pin pin-mumbai">
-                📍
-                <span>Mumbai</span>
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         OUR GOALS
-    ====================================================== -->
-
-    <section class="section goals-section">
-
-        <div class="section-intro">
-
-            <span class="section-label">
-                OUR GOALS
-            </span>
-
-            <h2>
-                Designed Around
-                <span>Better Utilization.</span>
-            </h2>
-
-            <p>
-                Prototype goals rather than fabricated live statistics.
-            </p>
-
-        </div>
-
-
-        <div class="goals-grid">
-
-            <div>
-                🚛
-                <strong>
-                    Improve Return Capacity Utilization
-                </strong>
-            </div>
-
-            <div>
-                📦
-                <strong>
-                    Connect Businesses With Available Capacity
-                </strong>
-            </div>
-
-            <div>
-                💰
-                <strong>
-                    Create Additional Earning Opportunities
-                </strong>
-            </div>
-
-            <div>
-                🌱
-                <strong>
-                    Improve Freight Efficiency
-                </strong>
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         FINAL CTA
-    ====================================================== -->
-
-    <section class="final-cta">
-
-        <div class="cta-card">
-
-            <div>
-
-                <span>
-                    HAVE EMPTY CAPACITY?
-                </span>
-
-                <h2>
-                    Turn It Into an Opportunity.
-                </h2>
-
-                <button
-                    class="hero-primary"
-                    onclick="openTruckFlow()">
-                    🚛 POST RETURN CAPACITY
-                </button>
-
-            </div>
-
-
-            <div class="cta-divider"></div>
-
-
-            <div>
-
-                <span>
-                    NEED TO MOVE GOODS?
-                </span>
-
-                <h2>
-                    Find Available Return Capacity.
-                </h2>
-
-                <button
-                    class="hero-secondary"
-                    onclick="openShipmentFlow()">
-                    📦 FIND A TRUCK
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         FINAL MESSAGE
-    ====================================================== -->
-
-    <section class="final-message">
-
-        <p>
-            THE TRUCK IS ALREADY GOING BACK.
-        </p>
-
-        <h2>
-            LET'S GIVE IT A REASON
-            <span>TO COME BACK LOADED.</span>
-        </h2>
-
-        <div class="final-brand">
-            EMPTYMILES
-        </div>
-
-        <span>
-            Turn Empty Return Trips into Revenue.
-        </span>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
-    <footer id="contact">
-
-        <div class="footer-main">
-
-            <div class="footer-brand">
-
-                <div class="footer-logo">
-                    🚚 EMPTYMILES
-                </div>
-
-                <p>
-                    Turn Empty Return Trips into Revenue.
-                </p>
-
-                <p class="footer-location">
-                    📍 Indore, Madhya Pradesh, India
-                </p>
-
-            </div>
-
-
-            <div class="footer-links">
-
+            <div class="benefit">
+                <span>💰</span>
                 <div>
-                    <strong>Platform</strong>
-
-                    <a href="#home">Home</a>
-                    <a href="#how-it-works">How It Works</a>
-                    <a href="#truck-owner">For Truck Owners</a>
-                    <a href="#business">For Businesses</a>
+                    <h3>Additional Revenue Opportunity</h3>
+                    <p>
+                        Turn unused capacity into a potential earning opportunity.
+                    </p>
                 </div>
-
-
-                <div>
-                    <strong>Company</strong>
-
-                    <a href="#about">About Us</a>
-                    <a href="#impact">Impact</a>
-                    <a href="#contact">Contact</a>
-                </div>
-
-
-                <div>
-                    <strong>Contact</strong>
-
-                    <a href="mailto:info@emptymiles.com">
-                        📧 info@emptymiles.com
-                    </a>
-
-                    <a href="tel:+919876543210">
-                        📞 +91 98765 43210
-                    </a>
-
-                    <span>
-                        📍 Indore, Madhya Pradesh
-                    </span>
-
-                </div>
-
             </div>
 
-        </div>
 
-
-        <div class="footer-bottom">
-
-            <span>
-                © 2026 EMPTYMILES. Prototype.
-            </span>
-
-            <span>
-                Designed for smarter freight utilization.
-            </span>
-
-        </div>
-
-    </footer>
-
-
-
-    <!-- =====================================================
-         TRUCK MODAL
-    ====================================================== -->
-
-    <div class="modal-overlay" id="truckModal">
-
-        <div class="modal">
-
-            <button class="close-modal" onclick="closeModal('truckModal')">
-                ×
-            </button>
-
-            <div class="modal-icon">
-                🚛
+            <div class="benefit">
+                <span>📦</span>
+                <div>
+                    <h3>Smarter Freight Access</h3>
+                    <p>
+                        Help businesses discover suitable return capacity.
+                    </p>
+                </div>
             </div>
 
-            <span class="section-label">
-                TRUCK OWNER
-            </span>
 
-            <h2>
-                Post Return Capacity
-            </h2>
-
-            <p>
-                Tell us about your truck's available return capacity.
-            </p>
-
-
-            <form id="truckForm">
-
-                <label>
-                    Current Location
-
-                    <input
-                        type="text"
-                        value="Mumbai"
-                        id="truckFrom"
-                        required>
-                </label>
-
-
-                <label>
-                    Return Destination
-
-                    <input
-                        type="text"
-                        value="Indore"
-                        id="truckTo"
-                        required>
-                </label>
-
-
-                <label>
-                    Total Truck Capacity
-
-                    <input
-                        type="number"
-                        value="10"
-                        required>
-                </label>
-
-
-                <label>
-                    Available Return Capacity
-
-                    <input
-                        type="number"
-                        value="6"
-                        required>
-                </label>
-
-
-                <label>
-                    Return Date
-
-                    <input
-                        type="date"
-                        required>
-                </label>
-
-
-                <button
-                    type="submit"
-                    class="modal-primary">
-                    POST CAPACITY
-                </button>
-
-            </form>
+            <div class="benefit">
+                <span>🌱</span>
+                <div>
+                    <h3>Efficient Transport</h3>
+                    <p>
+                        Enable more cargo movement on existing journeys.
+                    </p>
+                </div>
+            </div>
 
         </div>
 
     </div>
 
+</section>
 
 
-    <!-- =====================================================
-         SHIPMENT MODAL
-    ====================================================== -->
+<!-- ================= FOOTER ================= -->
 
-    <div class="modal-overlay" id="shipmentModal">
+<footer>
 
-        <div class="modal">
-
-            <button class="close-modal" onclick="closeModal('shipmentModal')">
-                ×
-            </button>
-
-            <div class="modal-icon">
-                📦
-            </div>
-
-            <span class="section-label">
-                BUSINESS
-            </span>
-
-            <h2>
-                Find Return Capacity
-            </h2>
-
-            <p>
-                Enter your shipment requirements.
-            </p>
-
-
-            <form id="shipmentForm">
-
-                <label>
-                    Pickup
-
-                    <input
-                        type="text"
-                        value="Mumbai"
-                        required>
-                </label>
-
-
-                <label>
-                    Destination
-
-                    <input
-                        type="text"
-                        value="Indore"
-                        required>
-                </label>
-
-
-                <label>
-                    Cargo
-
-                    <input
-                        type="text"
-                        value="General Goods"
-                        required>
-                </label>
-
-
-                <label>
-                    Required Capacity
-
-                    <input
-                        type="number"
-                        value="4"
-                        required>
-                </label>
-
-
-                <label>
-                    Pickup Date
-
-                    <input
-                        type="date"
-                        required>
-                </label>
-
-
-                <button
-                    type="submit"
-                    class="modal-primary">
-                    FIND RETURN CAPACITY
-                </button>
-
-            </form>
-
-        </div>
-
+    <div class="footer-logo">
+        🚛 <strong>EMPTY<span>MILES</span></strong>
     </div>
 
+    <p>
+        Turn Empty Return Trips into Revenue.
+    </p>
+
+    <small>
+        Prototype • Indore, Madhya Pradesh, India
+    </small>
+
+</footer>
 
 
-    <!-- =====================================================
-         MATCH MODAL
-    ====================================================== -->
-
-    <div class="modal-overlay" id="matchModal">
-
-        <div class="modal match-modal">
-
-            <button class="close-modal" onclick="closeModal('matchModal')">
-                ×
-            </button>
-
-
-            <div class="match-found-icon">
-                🎯
-            </div>
-
-
-            <span class="match-found-label">
-                MATCH FOUND
-            </span>
-
-
-            <h2>
-                98% Match
-            </h2>
-
-
-            <div class="match-details">
-
-                <div>
-                    <span>Truck</span>
-                    <strong id="matchTruck">
-                        EM1024
-                    </strong>
-                </div>
-
-                <div>
-                    <span>Route</span>
-                    <strong>
-                        Mumbai → Indore
-                    </strong>
-                </div>
-
-                <div>
-                    <span>Available</span>
-                    <strong>
-                        6 Ton
-                    </strong>
-                </div>
-
-                <div>
-                    <span>Required</span>
-                    <strong>
-                        4 Ton
-                    </strong>
-                </div>
-
-            </div>
-
-
-            <button
-                class="modal-primary"
-                onclick="bookShipment()">
-                BOOK NOW
-            </button>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         SUCCESS MODAL
-    ====================================================== -->
-
-    <div class="modal-overlay" id="successModal">
-
-        <div class="modal success-modal">
-
-            <div class="success-icon">
-                ✓
-            </div>
-
-            <span class="section-label">
-                BOOKING CONFIRMED
-            </span>
-
-            <h2>
-                Your Shipment Is Booked.
-            </h2>
-
-            <div class="shipment-id">
-                Shipment EM4582
-            </div>
-
-            <p>
-                Mumbai → Indore
-            </p>
-
-            <button
-                class="modal-primary"
-                onclick="goToTracking()">
-                TRACK SHIPMENT 🚚
-            </button>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- =====================================================
-         LOGIN MODAL
-    ====================================================== -->
-
-    <div class="modal-overlay" id="loginModal">
-
-        <div class="modal">
-
-            <button class="close-modal" onclick="closeModal('loginModal')">
-                ×
-            </button>
-
-            <div class="modal-icon">
-                🔐
-            </div>
-
-            <h2>
-                Welcome Back
-            </h2>
-
-            <p>
-                Login functionality will connect to the backend later.
-            </p>
-
-            <input
-                class="demo-input"
-                type="email"
-                placeholder="Email">
-
-            <input
-                class="demo-input"
-                type="password"
-                placeholder="Password">
-
-            <button
-                class="modal-primary"
-                onclick="alert('Demo login — Spring Boot authentication will be connected later.')">
-                LOGIN
-            </button>
-
-        </div>
-
-    </div>
-
-
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>
