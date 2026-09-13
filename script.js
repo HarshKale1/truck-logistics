@@ -1,287 +1,23 @@
 
-let loads = [
+/* =========================================================
+   EMPTYMILES JAVASCRIPT
+========================================================= */
 
-    {
-        id: 1,
-        pickup: "Mumbai",
-        destination: "Indore",
-        material: "Steel",
-        weight: 12,
-        budget: 32000,
-        match: 95
-    },
 
-    {
-        id: 2,
-        pickup: "Mumbai",
-        destination: "Dewas",
-        material: "Electronics",
-        weight: 10,
-        budget: 28000,
-        match: 91
-    },
-
-    {
-        id: 3,
-        pickup: "Mumbai",
-        destination: "Bhopal",
-        material: "Machinery",
-        weight: 15,
-        budget: 35000,
-        match: 82
-    },
-
-    {
-        id: 4,
-        pickup: "Mumbai",
-        destination: "Ujjain",
-        material: "Furniture",
-        weight: 8,
-        budget: 24000,
-        match: 87
-    },
-
-    {
-        id: 5,
-        pickup: "Mumbai",
-        destination: "Ahmedabad",
-        material: "Textiles",
-        weight: 11,
-        budget: 30000,
-        match: 76
-    },
-
-    {
-        id: 6,
-        pickup: "Mumbai",
-        destination: "Ratlam",
-        material: "Food Products",
-        weight: 9,
-        budget: 26000,
-        match: 80
-    }
-
-];
-
-
-/* =====================================
-   LOAD CARDS
-===================================== */
-
-function displayLoads(data) {
-
-    const container = document.getElementById("loadsContainer");
-
-    container.innerHTML = "";
-
-
-    if (data.length === 0) {
-
-        container.innerHTML = `
-            <div style="
-                grid-column: 1/-1;
-                background:white;
-                padding:30px;
-                text-align:center;
-                border-radius:15px;
-                color:#777;
-            ">
-                No matching loads found.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    data.forEach(load => {
-
-        const card = document.createElement("div");
-
-        card.className = "load-card";
-
-
-        card.innerHTML = `
-
-            <span class="match-score">
-                ⭐ ${load.match}% Match
-            </span>
-
-
-            <div class="load-route">
-
-                <div>
-                    <small>PICKUP</small>
-                    <strong>${load.pickup}</strong>
-                </div>
-
-                <span class="arrow">→</span>
-
-                <div>
-                    <small>DELIVERY</small>
-                    <strong>${load.destination}</strong>
-                </div>
-
-            </div>
-
-
-            <div class="load-info">
-
-                <div>
-                    <span>Material</span>
-                    <strong>${load.material}</strong>
-                </div>
-
-
-                <div>
-                    <span>Weight</span>
-                    <strong>${load.weight} Ton</strong>
-                </div>
-
-
-                <div>
-                    <span>Budget</span>
-                    <strong>₹${load.budget.toLocaleString("en-IN")}</strong>
-                </div>
-
-
-                <div>
-                    <span>Available</span>
-                    <strong>Today</strong>
-                </div>
-
-            </div>
-
-
-            <button onclick="selectLoad(${load.id})">
-                View Load
-            </button>
-
-        `;
-
-
-        container.appendChild(card);
-
-    });
-
-}
-
-
-/* =====================================
-   SEARCH LOADS
-===================================== */
-
-function searchLoads() {
-
-    const searchValue =
-        document
-            .getElementById("searchInput")
-            .value
-            .toLowerCase()
-            .trim();
-
-
-    const filteredLoads = loads.filter(load => {
-
-        return (
-
-            load.pickup.toLowerCase().includes(searchValue) ||
-
-            load.destination.toLowerCase().includes(searchValue) ||
-
-            load.material.toLowerCase().includes(searchValue)
-
-        );
-
-    });
-
-
-    displayLoads(filteredLoads);
-
-}
-
-
-/* =====================================
-   SELECT LOAD
-===================================== */
-
-function selectLoad(id) {
-
-    const load = loads.find(item => item.id === id);
-
-
-    if (!load) {
-        return;
-    }
-
-
-    const message = `
-
-Return Load Match Found!
-
-Route:
-${load.pickup} → ${load.destination}
-
-Material:
-${load.material}
-
-Weight:
-${load.weight} Ton
-
-Budget:
-₹${load.budget.toLocaleString("en-IN")}
-
-Match:
-${load.match}%
-
-    `;
-
-
-    const accepted = confirm(message + "\nAccept this load?");
-
-
-    if (accepted) {
-
-        alert(
-            "Load accepted successfully!\n\n" +
-            load.pickup +
-            " → " +
-            load.destination
-        );
-
-    }
-
-}
-
-
-/* =====================================
-   SHOW ALL LOADS
-===================================== */
-
-function showAllLoads() {
-
-    document.getElementById("searchInput").value = "";
-
-    displayLoads(loads);
-
-}
-
-
-/* =====================================
+/* =========================================================
    MOBILE MENU
-===================================== */
+========================================================= */
 
-function toggleMenu() {
+function toggleMobileMenu() {
 
-    const menu =
-        document.getElementById("mobileMenu");
+    const menu = document.getElementById("mobileMenu");
 
     menu.classList.toggle("show");
 
 }
 
 
-function closeMenu() {
+function closeMobileMenu() {
 
     document
         .getElementById("mobileMenu")
@@ -290,14 +26,288 @@ function closeMenu() {
 }
 
 
-/* =====================================
-   SCROLL TO RETURN LOADS
-===================================== */
+/* =========================================================
+   MODAL FUNCTIONS
+========================================================= */
 
-function scrollToMatches() {
+function openModal(id) {
+
+    document.getElementById(id).style.display = "flex";
+
+}
+
+
+function closeModal(id) {
+
+    document.getElementById(id).style.display = "none";
+
+}
+
+
+/* =========================================================
+   TRUCK FLOW
+========================================================= */
+
+function openTruckFlow() {
+
+    openModal("truckModal");
+
+}
+
+
+document
+    .getElementById("truckForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        closeModal("truckModal");
+
+        showCapacityPosted();
+
+    });
+
+
+function showCapacityPosted() {
+
+    setTimeout(function() {
+
+        alert(
+            "✅ RETURN CAPACITY POSTED!\n\n" +
+            "Truck: EM1024\n" +
+            "Route: Mumbai → Indore\n" +
+            "Available Capacity: 6 Ton\n\n" +
+            "EMPTYMILES will now look for suitable shipments."
+        );
+
+    }, 200);
+
+}
+
+
+/* =========================================================
+   SHIPMENT FLOW
+========================================================= */
+
+function openShipmentFlow() {
+
+    openModal("shipmentModal");
+
+}
+
+
+document
+    .getElementById("shipmentForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        closeModal("shipmentModal");
+
+        startMatching();
+
+        document
+            .getElementById("business")
+            .scrollIntoView({
+                behavior: "smooth"
+            });
+
+    });
+
+
+/* =========================================================
+   MATCHING ANIMATION
+========================================================= */
+
+function startMatching() {
+
+    const result =
+        document.getElementById("matchingResult");
+
+
+    result.innerHTML = `
+
+        <div class="searching-animation">
+
+            <div class="search-icon">
+                🔍
+            </div>
+
+            <strong>
+                Searching Return Trucks...
+            </strong>
+
+            <span>
+                Starting matching engine
+            </span>
+
+        </div>
+
+    `;
+
+
+    setTimeout(function() {
+
+        result.innerHTML = `
+
+            <div class="searching-animation">
+
+                <div class="search-icon">
+                    🗺️
+                </div>
+
+                <strong>
+                    Route Match ✓
+                </strong>
+
+                <span>
+                    Mumbai → Indore
+                </span>
+
+            </div>
+
+        `;
+
+    }, 1000);
+
+
+    setTimeout(function() {
+
+        result.innerHTML = `
+
+            <div class="searching-animation">
+
+                <div class="search-icon">
+                    📦
+                </div>
+
+                <strong>
+                    Capacity Match ✓
+                </strong>
+
+                <span>
+                    4 Ton required / 6 Ton available
+                </span>
+
+            </div>
+
+        `;
+
+    }, 2000);
+
+
+    setTimeout(function() {
+
+        result.innerHTML = `
+
+            <div class="searching-animation">
+
+                <div class="search-icon">
+                    📅
+                </div>
+
+                <strong>
+                    Date Match ✓
+                </strong>
+
+                <span>
+                    15 September
+                </span>
+
+            </div>
+
+        `;
+
+    }, 3000);
+
+
+    setTimeout(function() {
+
+        result.innerHTML = `
+
+            <div class="match-result-active">
+
+                <div class="match-found-small">
+                    🎯 MATCH FOUND
+                </div>
+
+                <div class="match-score-large">
+                    98%
+                </div>
+
+                <p>
+                    Truck EM1024<br>
+                    6 Ton Available<br>
+                    4 Ton Required
+                </p>
+
+                <button onclick="bookShipment()">
+                    BOOK SHIPMENT
+                </button>
+
+            </div>
+
+        `;
+
+    }, 4000);
+
+}
+
+
+/* =========================================================
+   SHOW MATCH
+========================================================= */
+
+function showMatch(truckId, score) {
+
+    document.getElementById("matchTruck").textContent =
+        truckId;
+
+
+    const modal =
+        document.getElementById("matchModal");
+
+
+    modal.style.display = "flex";
+
+
+    const scoreElement =
+        modal.querySelector("h2");
+
+
+    scoreElement.textContent =
+        score + "% Match";
+
+}
+
+
+/* =========================================================
+   BOOK SHIPMENT
+========================================================= */
+
+function bookShipment() {
+
+    closeModal("matchModal");
+
+    setTimeout(function() {
+
+        openModal("successModal");
+
+    }, 300);
+
+}
+
+
+/* =========================================================
+   TRACKING
+========================================================= */
+
+function goToTracking() {
+
+    closeModal("successModal");
 
     document
-        .getElementById("matches")
+        .getElementById("tracking")
         .scrollIntoView({
             behavior: "smooth"
         });
@@ -305,96 +315,165 @@ function scrollToMatches() {
 }
 
 
-/* =====================================
-   MODAL
-===================================== */
+/* =========================================================
+   MATCHING SECTION
+========================================================= */
 
-function openLoadModal() {
+function scrollToMatching() {
 
     document
-        .getElementById("modal")
-        .style.display = "flex";
+        .getElementById("matching")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
 
 }
 
 
-function closeLoadModal() {
+/* =========================================================
+   BOOKINGS
+========================================================= */
 
-    document
-        .getElementById("modal")
-        .style.display = "none";
+function showBookings() {
+
+    alert(
+        "MY BOOKINGS\n\n" +
+
+        "Shipment EM4582\n" +
+        "Mumbai → Indore\n" +
+        "Status: Confirmed\n\n" +
+
+        "This will become a real booking list " +
+        "when the Spring Boot backend is connected."
+    );
 
 }
 
 
-/* =====================================
-   POST LOAD
-===================================== */
+/* =========================================================
+   LOGIN
+========================================================= */
+
+function openLogin() {
+
+    openModal("loginModal");
+
+}
+
+
+function openSignup() {
+
+    alert(
+        "EMPTYMILES registration will be connected " +
+        "to the Spring Boot backend."
+    );
+
+}
+
+
+/* =========================================================
+   HERO STATUS ANIMATION
+========================================================= */
+
+const emptyStatus =
+    document.getElementById("emptyStatus");
+
+const matchedStatus =
+    document.getElementById("matchedStatus");
+
+const loadedStatus =
+    document.getElementById("loadedStatus");
+
+
+function animateHeroStatus() {
+
+    setTimeout(function() {
+
+        emptyStatus.style.opacity = "1";
+
+        matchedStatus.style.opacity = "0.45";
+
+        loadedStatus.style.opacity = "0.45";
+
+    }, 500);
+
+
+    setTimeout(function() {
+
+        emptyStatus.style.opacity = "0.45";
+
+        matchedStatus.style.opacity = "1";
+
+        loadedStatus.style.opacity = "0.45";
+
+    }, 2800);
+
+
+    setTimeout(function() {
+
+        emptyStatus.style.opacity = "0.45";
+
+        matchedStatus.style.opacity = "0.45";
+
+        loadedStatus.style.opacity = "1";
+
+    }, 5000);
+
+}
+
+
+animateHeroStatus();
+
+
+setInterval(
+    animateHeroStatus,
+    7000
+);
+
+
+/* =========================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+========================================================= */
 
 document
-    .getElementById("loadForm")
-    .addEventListener("submit", function(event) {
+    .querySelectorAll(".modal-overlay")
+    .forEach(function(overlay) {
 
-        event.preventDefault();
+        overlay.addEventListener(
+            "click",
+            function(event) {
 
+                if (event.target === overlay) {
 
-        const pickup =
-            document.getElementById("pickup").value;
+                    overlay.style.display = "none";
 
-        const destination =
-            document.getElementById("destination").value;
+                }
 
-        const material =
-            document.getElementById("material").value;
-
-        const weight =
-            Number(document.getElementById("weight").value);
-
-        const budget =
-            Number(document.getElementById("budget").value);
-
-
-        const newLoad = {
-
-            id: loads.length + 1,
-
-            pickup: pickup,
-
-            destination: destination,
-
-            material: material,
-
-            weight: weight,
-
-            budget: budget,
-
-            match: 90
-
-        };
-
-
-        loads.unshift(newLoad);
-
-
-        displayLoads(loads);
-
-
-        closeLoadModal();
-
-
-        document
-            .getElementById("loadForm")
-            .reset();
-
-
-        alert("Load posted successfully!");
+            }
+        );
 
     });
 
 
-/* =====================================
-   INITIALIZE
-===================================== */
+/* =========================================================
+   ESC KEY CLOSE MODAL
+========================================================= */
 
-displayLoads(loads);
+document.addEventListener(
+    "keydown",
+    function(event) {
 
+        if (event.key === "Escape") {
+
+            document
+                .querySelectorAll(".modal-overlay")
+                .forEach(function(modal) {
+
+                    modal.style.display = "none";
+
+                });
+
+        }
+
+    }
+);
